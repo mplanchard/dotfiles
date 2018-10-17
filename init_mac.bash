@@ -73,12 +73,16 @@ if [[ ! $(which rustc) ]]; then
 fi
 
 # Install Magnet from the app store
-masid=$(mas search magnet | grep "Magnet (" | awk '{print $1}')
-mas install "$masid"
+MAGNET_ID=$(mas search magnet | grep "Magnet (" | awk '{print $1}')
+mas install "$MAGNET_ID"
 
 # Install 1password from the app store
-onepwid=$(mas search 1Password | grep "1Password 7 - Password Manager (" | awk '{print $1}')
-mas install "$onepwid"
+ONEPW_ID=$(mas search 1Password | grep "1Password 7 - Password Manager (" | awk '{print $1}')
+mas install "$ONEPW_ID"
+
+# Install amphetamine
+AMPHETAMINE_ID=$(mas search Amphetamine | grep "Amphetamine (" | awk '{print $1}')
+mas install "$AMPHETAMINE_ID"
 
 # ###################################################################### 
 # Configure VSCode
