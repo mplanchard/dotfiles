@@ -9,12 +9,19 @@ GH_KEYFILE="$HOME/.ssh/github_rsa"
 SSH_CONF="$HOME/.ssh/config"
 SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null && pwd )"
 
-# Symlink Config files
+# ###################################################################### 
+# Add Config Files
+# ###################################################################### 
+
 [[ ! -f $HOME/.aliases ]] && ln -s "$SCRIPT_DIR/aliases.sh" "$HOME/.aliases"
 [[ ! -f $HOME/.bash_profile ]] && ln -s "$SCRIPT_DIR/bash_profile.sh" "$HOME/.bash_profile"
 [[ ! -f $HOME/.bashrc ]] && ln -s "$SCRIPT_DIR/bashrc.sh" "$HOME/.bashrc"
 [[ ! -f $HOME/.globalrc ]] && ln -s "$SCRIPT_DIR/globalrc.sh" "$HOME/.globalrc"
 [[ ! -f $HOME/.vimrc ]] && ln -s "$SCRIPT_DIR/vimrc" "$HOME/.vimrc"
+
+# ###################################################################### 
+# Install Things
+# ###################################################################### 
 
 # Install Homebrew and Command-line Tools
 if [[ ! $(which brew) ]]; then
@@ -26,7 +33,8 @@ export HOMEBREW_NO_AUTO_UPDATE=1
 
 brew update
 
-BREW_PKGS="bash-completion \
+BREW_PKGS=" \
+    bash-completion \
     bat \
     exa \
     fd \
@@ -55,6 +63,7 @@ done
 [[ ! -d /Applications/Virtualbox.app ]] && brew cask install virtualbox
 [[ ! $(which vagrant) ]] && brew cask install vagrant
 [[ ! -d "/Applications/Vagrant Manager.app" ]] && brew cask install vagrant-manager
+[[ ! -d "/Applications/Visual Studio Code.app" ]] && brew cask install visual-studio-code
 
 unset HOMEBREW_NO_AUTO_UPDATE
 
@@ -71,8 +80,62 @@ mas install "$masid"
 onepwid=$(mas search 1Password | grep "1Password 7 - Password Manager (" | awk '{print $1}')
 mas install "$onepwid"
 
+# ###################################################################### 
+# Configure VSCode
+# ###################################################################### 
+
+CODE="/Applications/Visual Studio Code.app/Contents/Resources/app/bin/code"
+INSTALLED_EXTENSIONS=$("$CODE" --list-extensions)
+TO_INSTALL=" \
+    bungcip.better-toml \
+    DavidAnson.vscode-markdownlint \
+    dbaeumer.vscode-eslint \
+    eamodio.gitlens \
+    eg2.tslint \
+    eg2.vscode-npm-script \
+    HookyQR.beautify \
+    marcostazi.VS-code-vagrantfile \
+    ms-python.python \
+    ms-vscode.cpptools \
+    PeterJausovec.vscode-docker \
+    redhat.vscode-yaml \
+    robertohuertasm.vscode-icons \
+    rust-lang.rust \
+    streetsidesoftware.code-spell-checker \
+    vadimcn.vscode-lldb \
+    vscode-ext.sync-rsync \
+    vscodevim.vim"
+
+for EXTENSION in $TO_INSTALL; do
+    echo "$EXTENSION"
+    if [[ ! $(grep "$EXTENSION" <<< "$INSTALLED_EXTENSIONS") ]]; then
+        "$CODE" --install-extension "$EXTENSION"
+    fi
+done
+
+# Add user settings
+mkdir -p "$HOME/github/mplanchard"
+
+[[ ! -d "$HOME/github/mplanchard/vscode-settings" ]] && git clone https://github.com/mplanchard/vscode-settings "$HOME/github/mplanchard/vscode-settings"
+
+SETTINGS_DIR="$HOME/Library/Application Support/Code/User"
+
+mkdir -p "$SETTINGS_DIR"
+
+SETTINGS_FILE="$SETTINGS_DIR/settings.json"
+
+[[ ! -f "$SETTINGS_FILE" ]] && cp "$HOME/github/mplanchard/vscode-settings/user-settings.json" "$SETTINGS_FILE"
+
+# ###################################################################### 
+# Add useful directories
+# ###################################################################### 
+
 # Create a ~/tmp directory
 mkdir -p $HOME/tmp
+
+# ###################################################################### 
+# Install Python venvs
+# ###################################################################### 
 
 # Create a ~/.pyvenv directory
 mkdir -p $HOME/.pyvenv
@@ -83,6 +146,41 @@ mkdir -p $HOME/.pyvenv
 # Create python vritual environments
 [[ ! -d $HOME/.pyvenv/py3 ]] && /usr/local/bin/python3 -m venv $HOME/.pyvenv/py3
 [[ ! -d $HOME/.pyvenv/py2 ]] && /usr/local/bin/virtualenv -p python2.7 $HOME/.pyvenv/py2
+
+# Install dev packages
+
+TO_INSTALL_ALL=" \
+    flake8 \
+    ipdb \
+    pydocstyle \
+    pylint \
+    pytest"
+TO_INSTALL_PY2=" \
+    mock \
+    six \
+    typing"
+TO_INSTALL_PY3=" \
+    mypy"
+
+$HOME/.pyvenv/py3/bin/pip install $TO_INSTALL_ALL
+$HOME/.pyvenv/py3/bin/pip install $TO_INSTALL_PY3
+
+$HOME/.pyvenv/py2/bin/pip install $TO_INSTALL_ALL
+$HOME/.pyvenv/py2/bin/pip install $TO_INSTALL_PY2
+
+
+# ###################################################################### 
+# Configure git
+# ###################################################################### 
+
+# Add `git lg` alias
+
+git config --global alias.lg " \
+    log \
+    --color \
+    --graph \
+    --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' \ 
+    --abbrev-commit"
 
 # Create a new SSH key for GitHub
 if [[ ! -f "$GH_KEYFILE" ]]; then
@@ -136,3 +234,4 @@ ssh-add -K $GH_KEYFILE
 if [[ "$CREATED_GH_KEY" ]]; then
     open https://github.com/settings/keys
 fi
+
