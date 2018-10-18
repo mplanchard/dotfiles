@@ -15,5 +15,5 @@ source "/usr/local/opt/nvm/nvm.sh"
 export PATH="$HOME/.cargo/bin:$PATH"
 
 # VSCode
-export PATH="\$PATH:/Applications/Visual Studio Code.app/Contents/Resources/app/bin"
+export PATH="$PATH:/Applications/Visual Studio Code.app/Contents/Resources/app/bin"
 
