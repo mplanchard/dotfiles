@@ -239,3 +239,6 @@ if [[ "$CREATED_GH_KEY" ]]; then
     open https://github.com/settings/keys
 fi
 
+# Pop up xcode command line tools installer
+xcode-select --install
+

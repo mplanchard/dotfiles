@@ -20,6 +20,5 @@ export PATH="$HOME/.cargo/bin:$PATH"
 export PATH="$PATH:/Applications/Visual Studio Code.app/Contents/Resources/app/bin"
 
 # Source local RC
-#
-[ -f $HOME/.localrc ] && . $HOME/.localrc
 
+[ -f $HOME/.localrc ] && . $HOME/.localrc
