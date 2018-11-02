@@ -44,6 +44,7 @@ BREW_PKGS=" \
     python3 \
     ripgrep \
     tokei \
+    vim \
     wget"
 
 for PKG in $BREW_PKGS; do
