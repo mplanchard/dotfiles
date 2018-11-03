@@ -13,11 +13,20 @@ SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null && pwd )"
 # Add Config Files
 # ###################################################################### 
 
-[[ ! -f $HOME/.aliases ]] && ln -s "$SCRIPT_DIR/aliases.sh" "$HOME/.aliases"
-[[ ! -f $HOME/.bash_profile ]] && ln -s "$SCRIPT_DIR/bash_profile.sh" "$HOME/.bash_profile"
-[[ ! -f $HOME/.bashrc ]] && ln -s "$SCRIPT_DIR/bashrc.sh" "$HOME/.bashrc"
-[[ ! -f $HOME/.globalrc ]] && ln -s "$SCRIPT_DIR/globalrc.sh" "$HOME/.globalrc"
-[[ ! -f $HOME/.vimrc ]] && ln -s "$SCRIPT_DIR/vimrc" "$HOME/.vimrc"
+[[ ! -f $HOME/.aliases ]] \
+    && echo "linking alises" \
+    && ln -s "$SCRIPT_DIR/aliases.sh" "$HOME/.aliases"
+[[ ! -f $HOME/.bash_profile ]] \
+    && echo "linking bash_profile" \
+    && ln -s "$SCRIPT_DIR/bash_profile.sh" "$HOME/.bash_profile"
+[[ ! -f $HOME/.bashrc ]] \
+    && echo "linking bashrc" \
+    && ln -s "$SCRIPT_DIR/bashrc.sh" "$HOME/.bashrc"
+[[ ! -f $HOME/.globalrc ]] \
+    && echo "linking globalrc" && ln -s "$SCRIPT_DIR/globalrc.sh" "$HOME/.globalrc"
+[[ ! -f $HOME/.vimrc ]] \
+    && echo "linking vimrc" \
+    && ln -s "$SCRIPT_DIR/vimrc" "$HOME/.vimrc"
 
 # ###################################################################### 
 # Install Things
@@ -25,7 +34,13 @@ SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null && pwd )"
 
 # Install Homebrew and Command-line Tools
 if [[ ! $(which brew) ]]; then
+    echo "installing homebrew"
     /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+fi
+
+# Try to update xcode cli tools
+if [[ ! $(xcode-select --version) ]]; then
+    xcode-select --install
 fi
 
 # Install packages from Homebrew
@@ -45,6 +60,8 @@ BREW_PKGS=" \
     ripgrep \
     tokei \
     wget"
+
+echo "checking brew packages for installs or updates"
 
 for PKG in $BREW_PKGS; do
     brew install $PKG || brew upgrade $PKG
@@ -69,20 +86,26 @@ unset HOMEBREW_NO_AUTO_UPDATE
 
 # Install Rust
 if [[ ! $(which rustc) ]]; then
+    echo "installing rust"
     curl https://sh.rustup.rs -sSf | sh
 fi
 
+# Temporarily disabled due to this bug: 
+#   https://github.com/mas-cli/mas/issues/182
 # Install Magnet from the app store
-MAGNET_ID=$(mas search magnet | grep "Magnet (" | awk '{print $1}')
-mas install "$MAGNET_ID"
-
-# Install 1password from the app store
-ONEPW_ID=$(mas search 1Password | grep "1Password 7 - Password Manager (" | awk '{print $1}')
-mas install "$ONEPW_ID"
-
-# Install amphetamine
-AMPHETAMINE_ID=$(mas search Amphetamine | grep "Amphetamine (" | awk '{print $1}')
-mas install "$AMPHETAMINE_ID"
+# echo "checking magnet install"
+# MAGNET_ID=$(mas search magnet | grep "Magnet (" | awk '{print $1}')
+# mas install "$MAGNET_ID"
+# 
+# # Install 1password from the app store
+# echo "checking 1password install"
+# ONEPW_ID=$(mas search 1Password | grep "1Password 7 - Password Manager (" | awk '{print $1}')
+# mas install "$ONEPW_ID"
+# 
+# # Install amphetamine
+# echo "checking amphetamine install"
+# AMPHETAMINE_ID=$(mas search Amphetamine | grep "Amphetamine (" | awk '{print $1}')
+# mas install "$AMPHETAMINE_ID"
 
 # ###################################################################### 
 # Configure VSCode
@@ -110,6 +133,8 @@ TO_INSTALL=" \
     vscode-ext.sync-rsync \
     vscodevim.vim"
 
+echo "installing vscode extensions"
+
 for EXTENSION in $TO_INSTALL; do
     echo "$EXTENSION"
     if [[ ! $(grep "$EXTENSION" <<< "$INSTALLED_EXTENSIONS") ]]; then
@@ -120,7 +145,9 @@ done
 # Add user settings
 mkdir -p "$HOME/github/mplanchard"
 
-[[ ! -d "$HOME/github/mplanchard/vscode-settings" ]] && git clone https://github.com/mplanchard/vscode-settings "$HOME/github/mplanchard/vscode-settings"
+[[ ! -d "$HOME/github/mplanchard/vscode-settings" ]] \
+    && echo "checking out vscode-settings" \
+    && git clone https://github.com/mplanchard/vscode-settings "$HOME/github/mplanchard/vscode-settings"
 
 SETTINGS_DIR="$HOME/Library/Application Support/Code/User"
 
@@ -128,7 +155,9 @@ mkdir -p "$SETTINGS_DIR"
 
 SETTINGS_FILE="$SETTINGS_DIR/settings.json"
 
-[[ ! -f "$SETTINGS_FILE" ]] && cp "$HOME/github/mplanchard/vscode-settings/user-settings.json" "$SETTINGS_FILE"
+[[ ! -f "$SETTINGS_FILE" ]] \
+    && echo "updating user settings for vscode" \
+    && ln -s "$HOME/github/mplanchard/vscode-settings/user-settings.json" "$SETTINGS_FILE"
 
 # ###################################################################### 
 # Add useful directories
@@ -148,8 +177,12 @@ mkdir -p $HOME/.pyvenv
 /usr/local/bin/pip3 install virtualenv
 
 # Create python vritual environments
-[[ ! -d $HOME/.pyvenv/py3 ]] && /usr/local/bin/python3 -m venv $HOME/.pyvenv/py3
-[[ ! -d $HOME/.pyvenv/py2 ]] && /usr/local/bin/virtualenv -p python2.7 $HOME/.pyvenv/py2
+[[ ! -d $HOME/.pyvenv/py3 ]] \
+    && echo "creating python3 venv" \
+    && /usr/local/bin/python3 -m venv $HOME/.pyvenv/py3
+[[ ! -d $HOME/.pyvenv/py2 ]] \
+    && echo "creating python2 venv" \
+    && /usr/local/bin/virtualenv -p python2.7 $HOME/.pyvenv/py2
 
 # Install dev packages
 
@@ -166,8 +199,12 @@ TO_INSTALL_PY2=" \
 TO_INSTALL_PY3=" \
     mypy"
 
+echo "checking python3 packages"
+
 $HOME/.pyvenv/py3/bin/pip install $TO_INSTALL_ALL
 $HOME/.pyvenv/py3/bin/pip install $TO_INSTALL_PY3
+
+echo "checking python2 packages"
 
 $HOME/.pyvenv/py2/bin/pip install $TO_INSTALL_ALL
 $HOME/.pyvenv/py2/bin/pip install $TO_INSTALL_PY2
@@ -238,7 +275,4 @@ ssh-add -K $GH_KEYFILE
 if [[ "$CREATED_GH_KEY" ]]; then
     open https://github.com/settings/keys
 fi
-
-# Pop up xcode command line tools installer
-xcode-select --install
 
