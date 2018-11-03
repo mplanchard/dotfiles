@@ -1,4 +1,4 @@
-# Set up a new MacOS system just the way I like it.
+# Set up a new MacOS system just the way I like it
 
 # Exit on error
 set -e
@@ -33,38 +33,7 @@ SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null && pwd )"
 # ###################################################################### 
 
 # **********************************************************************
-# Vim plugins
-# **********************************************************************
-
-# Install pathogen
-mkdir -p ~/.vim/autoload ~/.vim/bundle && \
-    curl -LSso ~/.vim/autoload/pathogen.vim https://tpo.pe/pathogen.vim
-
-PLUGINS="editorconfig/editorconfig-vim \
-    ekalinin/dockerfile.vim \
-    elzr/vim-json \
-    joshdick/onedark.vim \
-    kien/ctrlp.vim \
-    leafgarland/typescript-vim \
-    mxw/vim-jsx \
-    nathanaelkane/vim-indent-guides \
-    pangloss/vim-javascript \
-    rust-lang/rust.vim \
-    scrooloose/nerdtree \
-    w0rp/ale" 
-
-for PLUGIN in $PLUGINS; do
-    NAME=$(basename "$PLUGIN")
-    echo "checking vim plugin $NAME"
-    if [[ ! -d $HOME/.vim/bundle/$NAME ]]; then
-        git clone https://github.com/$PLUGIN.git $HOME/.vim/bundle/$NAME
-    else
-        (cd $HOME/.vim/bundle/$NAME && git pull)
-    fi
-done
-
-# **********************************************************************
-# Other stuff
+# Brew
 # **********************************************************************
 
 # Install Homebrew and Command-line Tools
@@ -86,15 +55,16 @@ brew update
 BREW_PKGS=" \
     bash-completion \
     bat \
+    cmake \
     exa \
     fd \
     git \
+    go \
     mas \
     nvm \
     python3 \
     ripgrep \
     tokei \
-    vim \
     wget"
 
 echo "checking brew packages for installs or updates"
@@ -102,6 +72,9 @@ echo "checking brew packages for installs or updates"
 for PKG in $BREW_PKGS; do
     brew install $PKG || brew upgrade $PKG
 done
+
+# Vim needs some special args
+brew install vim --with-python3 --with-override-system-vi || brew upgrade vim
 
 [[ ! -d /Applications/Docker.app ]] && brew cask install docker
 [[ ! -d /Applications/Dropbox.app ]] && brew cask install dropbox
@@ -120,11 +93,50 @@ done
 
 unset HOMEBREW_NO_AUTO_UPDATE
 
+# **********************************************************************
+# Languages & Stuff
+# **********************************************************************
+
 # Install Rust
 if [[ ! $(which rustc) ]]; then
     echo "installing rust"
     curl https://sh.rustup.rs -sSf | sh
 fi
+rustup component add rust-src
+rustup update
+
+# Install neovim support for python3
+pip3 install --upgrade neovim
+
+# Update paths as required for later commands
+export NVM_DIR="$HOME/.nvm"
+source "/usr/local/opt/nvm/nvm.sh"
+
+# Install most recent stable node
+nvm install stable
+
+# Install jslint
+npm install -g jslint
+
+# Install typescript
+npm install -g typescript tslint
+
+# **********************************************************************
+# Vim plugins
+# **********************************************************************
+
+# Install vim-plug
+if [[ ! -f "$HOME/.vim/autoload/plug.vim" ]]; then
+    curl -fLo ~/.vim/autoload/plug.vim --create-dirs \
+        https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+fi
+
+# Install plugins
+vim +'PlugInstall --sync' +qa
+
+(cd $HOME/.vim/bundle/YouCompleteMe && \
+    ./install.py --clang-completer --rust-completer --go-completer)
+
 
 # Temporarily disabled due to this bug: 
 #   https://github.com/mas-cli/mas/issues/182

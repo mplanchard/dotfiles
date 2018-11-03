@@ -1,5 +1,24 @@
-" Start pathogen
-execute pathogen#infect()
+" Load plugins
+call plug#begin('~/.vim/bundle')
+
+Plug 'davidhalter/jedi'
+Plug 'editorconfig/editorconfig-vim'
+Plug 'ekalinin/dockerfile.vim'
+Plug 'elzr/vim-json'
+Plug 'joshdick/onedark.vim'
+Plug 'kien/ctrlp.vim'
+Plug 'leafgarland/typescript-vim'
+Plug 'mxw/vim-jsx'
+Plug 'nathanaelkane/vim-indent-guides'
+Plug 'pangloss/vim-javascript'
+Plug 'racer-rust/vim-racer'
+Plug 'rust-lang/rust.vim'
+Plug 'scrooloose/nerdtree'
+Plug 'tpope/vim-sensible'
+Plug 'Valloric/YouCompleteMe'
+Plug 'w0rp/ale'
+
+call plug#end()
 
 syntax on
 filetype plugin indent on
@@ -33,5 +52,4 @@ colorscheme onedark
 " Open nerdtree if vim invoked w/no files
 autocmd StdinReadPre * let s:std_in=1
 autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
-
 
