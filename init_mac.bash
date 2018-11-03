@@ -32,6 +32,10 @@ SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null && pwd )"
 # Install Things
 # ###################################################################### 
 
+# Install pathogen
+mkdir -p ~/.vim/autoload ~/.vim/bundle && \
+    curl -LSso ~/.vim/autoload/pathogen.vim https://tpo.pe/pathogen.vim
+
 # Install Homebrew and Command-line Tools
 if [[ ! $(which brew) ]]; then
     echo "installing homebrew"
