@@ -59,6 +59,7 @@ BREW_PKGS=" \
     python3 \
     ripgrep \
     tokei \
+    vim \
     wget"
 
 echo "checking brew packages for installs or updates"
