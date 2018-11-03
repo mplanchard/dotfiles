@@ -64,6 +64,7 @@ BREW_PKGS=" \
     nvm \
     python3 \
     ripgrep \
+    tmux \
     tokei \
     wget"
 
