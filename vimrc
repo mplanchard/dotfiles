@@ -1,5 +1,6 @@
 " Start pathogen
 execute pathogen#infect()
+
 syntax on
 filetype plugin indent on
 
@@ -14,6 +15,7 @@ set autoindent
 set copyindent
 set nosmartindent
 
+set backspace=indent,eol,start  " normal backspace
 set colorcolumn=79  " highlight column 79
 set history=1000
 set hlsearch  " highlight search matches
@@ -27,4 +29,9 @@ set undolevels=1000
 
 " Plugin enabled stuff
 colorscheme onedark
+
+" Open nerdtree if vim invoked w/no files
+autocmd StdinReadPre * let s:std_in=1
+autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
+
 
