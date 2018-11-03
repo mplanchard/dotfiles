@@ -117,7 +117,7 @@ source "/usr/local/opt/nvm/nvm.sh"
 nvm install stable
 
 # Install jslint
-npm install -g jslint
+npm install -g eslint
 
 # Install typescript
 npm install -g typescript tslint
