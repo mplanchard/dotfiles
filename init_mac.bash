@@ -150,6 +150,8 @@ mkdir -p "$HOME/github/mplanchard"
     && echo "checking out vscode-settings" \
     && git clone https://github.com/mplanchard/vscode-settings "$HOME/github/mplanchard/vscode-settings"
 
+(cd $HOME/github/mplanchard/vscode-settings && git checkout master && git pull)
+
 SETTINGS_DIR="$HOME/Library/Application Support/Code/User"
 
 mkdir -p "$SETTINGS_DIR"
