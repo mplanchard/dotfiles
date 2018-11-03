@@ -32,9 +32,40 @@ SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null && pwd )"
 # Install Things
 # ###################################################################### 
 
+# **********************************************************************
+# Vim plugins
+# **********************************************************************
+
 # Install pathogen
 mkdir -p ~/.vim/autoload ~/.vim/bundle && \
     curl -LSso ~/.vim/autoload/pathogen.vim https://tpo.pe/pathogen.vim
+
+PLUGINS="editorconfig/editorconfig-vim \
+    ekalinin/dockerfile.vim \
+    elzr/vim-json \
+    joshdick/onedark.vim \
+    kien/ctrlp.vim \
+    leafgarland/typescript-vim \
+    mxw/vim-jsx \
+    nathanaelkane/vim-indent-guides \
+    pangloss/vim-javascript \
+    rust-lang/rust.vim \
+    scrooloose/nerdtree \
+    w0rp/ale" 
+
+for PLUGIN in $PLUGINS; do
+    NAME=$(basename "$PLUGIN")
+    echo "checking vim plugin $NAME"
+    if [[ ! -d $HOME/.vim/bundle/$NAME ]]; then
+        git clone https://github.com/$PLUGIN.git $HOME/.vim/bundle/$NAME
+    else
+        (cd $HOME/.vim/bundle/$NAME && git pull)
+    fi
+done
+
+# **********************************************************************
+# Other stuff
+# **********************************************************************
 
 # Install Homebrew and Command-line Tools
 if [[ ! $(which brew) ]]; then
