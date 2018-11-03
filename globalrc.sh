@@ -9,9 +9,12 @@ set -o vi
 # Source aliases
 [ -f $HOME/.aliases ] && . $HOME/.aliases
 
+# Brew
+export PATH="/usr/local/bin:$PATH"
+
 # NVM setup
 export NVM_DIR="$HOME/.nvm"
-source "/usr/local/opt/nvm/nvm.sh"
+source "$(brew --prefix nvm)/nvm.sh"
 
 # Rust
 export PATH="$HOME/.cargo/bin:$PATH"
