@@ -23,7 +23,14 @@ SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null && pwd )"
     && echo "linking bashrc" \
     && ln -s "$SCRIPT_DIR/bashrc.sh" "$HOME/.bashrc"
 [[ ! -f $HOME/.globalrc ]] \
-    && echo "linking globalrc" && ln -s "$SCRIPT_DIR/globalrc.sh" "$HOME/.globalrc"
+    && echo "linking globalrc" \
+	&& ln -s "$SCRIPT_DIR/globalrc.sh" "$HOME/.globalrc"
+[[ ! -f "$HOME/Library/Application Support/iTerm2/DynamicProfiles/profiles.json" ]] \
+    && echo "linking iterm profiles" \
+	&& ln -s "$SCRIPT_DIR/iterm_profiles.json" "$HOME/Library/Application Support/iTerm2/DynamicProfiles/profiles.json"
+[[ ! -f $HOME/.tmux.conf ]] \
+    && echo "linking tmux.conf" \
+	&& ln -s "$SCRIPT_DIR/tmux.conf" "$HOME/.tmux.conf"
 [[ ! -f $HOME/.vimrc ]] \
     && echo "linking vimrc" \
     && ln -s "$SCRIPT_DIR/vimrc" "$HOME/.vimrc"
@@ -92,7 +99,22 @@ brew install vim --with-python3 --with-override-system-vi || brew upgrade vim
 [[ ! -d "/Applications/Vagrant Manager.app" ]] && brew cask install vagrant-manager
 [[ ! -d "/Applications/Visual Studio Code.app" ]] && brew cask install visual-studio-code
 
+# Allow font installations
+brew tap homebrew/cask-fonts
+
+brew cask install font-powerline-symbols
+brew cask install font-menlo-for-powerline
+brew cask install font-fira-mono-for-powerline
+
 unset HOMEBREW_NO_AUTO_UPDATE
+
+# **********************************************************************
+# tmux
+# **********************************************************************
+
+# install themes
+mkdir -p $HOME/github/jimeh
+git clone https://github.com/jimeh/tmux-themepack.git $HOME/github/jimeh/tmux-themepack
 
 # **********************************************************************
 # Languages & Stuff
@@ -106,9 +128,6 @@ fi
 rustup component add rust-src
 rustup update
 
-# Install neovim support for python3
-pip3 install --upgrade neovim
-
 # Update paths as required for later commands
 export NVM_DIR="$HOME/.nvm"
 source "/usr/local/opt/nvm/nvm.sh"
@@ -121,6 +140,7 @@ npm install -g eslint
 
 # Install typescript
 npm install -g typescript tslint
+
 
 # **********************************************************************
 # Vim plugins
