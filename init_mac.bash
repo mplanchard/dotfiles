@@ -134,6 +134,7 @@ source "/usr/local/opt/nvm/nvm.sh"
 
 # Install most recent stable node
 nvm install stable
+nvm install-latest-npm
 
 # Install jslint
 npm install -g eslint

@@ -14,7 +14,7 @@ export PATH="/usr/local/bin:$PATH"
 
 # NVM setup
 export NVM_DIR="$HOME/.nvm"
-source "$(brew --prefix nvm)/nvm.sh"
+source "/usr/local/opt/nvm/nvm.sh" 
 
 # Rust
 export PATH="$HOME/.cargo/bin:$PATH"
