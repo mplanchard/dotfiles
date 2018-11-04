@@ -9,6 +9,22 @@ GH_KEYFILE="$HOME/.ssh/github_rsa"
 SSH_CONF="$HOME/.ssh/config"
 SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null && pwd )"
 
+# ######################################################################
+# Add useful directories
+# ######################################################################
+
+# Create a ~/tmp directory
+mkdir -p $HOME/tmp
+
+# For python virtual environments
+mkdir -p $HOME/.pyvenv
+
+# For vim backups
+mkdir -p $HOME/.vim/backup
+
+# For vim swaps
+mkdir -p $HOME/.vim/swap
+
 # ###################################################################### 
 # Add Config Files
 # ###################################################################### 
@@ -114,7 +130,9 @@ unset HOMEBREW_NO_AUTO_UPDATE
 
 # install themes
 mkdir -p $HOME/github/jimeh
-git clone https://github.com/jimeh/tmux-themepack.git $HOME/github/jimeh/tmux-themepack
+if [[ ! -d "$HOME/github/jimeh/tmux-themepack" ]]; then
+    git clone https://github.com/jimeh/tmux-themepack.git $HOME/github/jimeh/tmux-themepack
+fi
 
 # **********************************************************************
 # Languages & Stuff
@@ -130,10 +148,11 @@ rustup update
 
 # Update paths as required for later commands
 export NVM_DIR="$HOME/.nvm"
-source "/usr/local/opt/nvm/nvm.sh"
+source "/usr/local/opt/nvm/nvm.sh" || true
 
 # Install most recent stable node
 nvm install stable
+nvm unalias default
 nvm install-latest-npm
 
 # Install jslint
@@ -231,19 +250,10 @@ SETTINGS_FILE="$SETTINGS_DIR/settings.json"
     && echo "updating user settings for vscode" \
     && ln -s "$HOME/github/mplanchard/vscode-settings/user-settings.json" "$SETTINGS_FILE"
 
-# ###################################################################### 
-# Add useful directories
-# ###################################################################### 
-
-# Create a ~/tmp directory
-mkdir -p $HOME/tmp
 
 # ###################################################################### 
 # Install Python venvs
 # ###################################################################### 
-
-# Create a ~/.pyvenv directory
-mkdir -p $HOME/.pyvenv
 
 # Install virtualenv for python 3
 /usr/local/bin/pip3 install virtualenv

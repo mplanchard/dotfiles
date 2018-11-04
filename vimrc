@@ -11,6 +11,7 @@ Plug 'leafgarland/typescript-vim'
 Plug 'mxw/vim-jsx'
 Plug 'nathanaelkane/vim-indent-guides'
 Plug 'pangloss/vim-javascript'
+Plug 'plytophogy/vim-virtualenv'
 Plug 'racer-rust/vim-racer'
 Plug 'rust-lang/rust.vim'
 Plug 'scrooloose/nerdcommenter'
@@ -24,6 +25,10 @@ call plug#end()
 
 syntax on
 filetype plugin indent on
+
+" file locations
+set directory=~/.vim/swap
+set backupdir=~/.vim/backup
 
 " whitespace
 set shiftwidth=4

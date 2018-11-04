@@ -9,12 +9,13 @@ set -o vi
 # Source aliases
 [ -f $HOME/.aliases ] && . $HOME/.aliases
 
-# Brew
-export PATH="/usr/local/bin:$PATH"
-
 # NVM setup
 export NVM_DIR="$HOME/.nvm"
 source "/usr/local/opt/nvm/nvm.sh" 
+
+# Brew
+export PATH="/usr/local/bin:$PATH"
+
 
 # Rust
 export PATH="$HOME/.cargo/bin:$PATH"
@@ -25,3 +26,4 @@ export PATH="$PATH:/Applications/Visual Studio Code.app/Contents/Resources/app/b
 # Source local RC
 
 [ -f $HOME/.localrc ] && . $HOME/.localrc
+
