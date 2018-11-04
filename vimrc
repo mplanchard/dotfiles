@@ -60,3 +60,5 @@ colorscheme onedark
 autocmd StdinReadPre * let s:std_in=1
 autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
 
+" Save ctrlp cache between sessions
+let g:ctrlp_clear_cache_on_exit = 0
