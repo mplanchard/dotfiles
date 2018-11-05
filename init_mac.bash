@@ -26,32 +26,6 @@ mkdir -p $HOME/.vim/backup
 mkdir -p $HOME/.vim/swap
 
 # ###################################################################### 
-# Add Config Files
-# ###################################################################### 
-
-[[ ! -f $HOME/.aliases ]] \
-    && echo "linking alises" \
-    && ln -s "$SCRIPT_DIR/aliases.sh" "$HOME/.aliases"
-[[ ! -f $HOME/.bash_profile ]] \
-    && echo "linking bash_profile" \
-    && ln -s "$SCRIPT_DIR/bash_profile.sh" "$HOME/.bash_profile"
-[[ ! -f $HOME/.bashrc ]] \
-    && echo "linking bashrc" \
-    && ln -s "$SCRIPT_DIR/bashrc.sh" "$HOME/.bashrc"
-[[ ! -f $HOME/.globalrc ]] \
-    && echo "linking globalrc" \
-	&& ln -s "$SCRIPT_DIR/globalrc.sh" "$HOME/.globalrc"
-[[ ! -f "$HOME/Library/Application Support/iTerm2/DynamicProfiles/profiles.json" ]] \
-    && echo "linking iterm profiles" \
-	&& ln -s "$SCRIPT_DIR/iterm_profiles.json" "$HOME/Library/Application Support/iTerm2/DynamicProfiles/profiles.json"
-[[ ! -f $HOME/.tmux.conf ]] \
-    && echo "linking tmux.conf" \
-	&& ln -s "$SCRIPT_DIR/tmux.conf" "$HOME/.tmux.conf"
-[[ ! -f $HOME/.vimrc ]] \
-    && echo "linking vimrc" \
-    && ln -s "$SCRIPT_DIR/vimrc" "$HOME/.vimrc"
-
-# ###################################################################### 
 # Install Things
 # ###################################################################### 
 
@@ -153,7 +127,6 @@ source "/usr/local/opt/nvm/nvm.sh" || true
 # Install most recent stable node
 nvm install stable
 nvm unalias default
-nvm install-latest-npm
 
 # Install jslint
 npm install -g eslint
@@ -290,6 +263,32 @@ echo "checking python2 packages"
 
 $HOME/.pyvenv/py2/bin/pip install $TO_INSTALL_ALL
 $HOME/.pyvenv/py2/bin/pip install $TO_INSTALL_PY2
+
+# ######################################################################
+# Add Config Files
+# ######################################################################
+
+[[ ! -f $HOME/.aliases ]] \
+    && echo "linking alises" \
+    && ln -s "$SCRIPT_DIR/aliases.sh" "$HOME/.aliases"
+[[ ! -f $HOME/.bash_profile ]] \
+    && echo "linking bash_profile" \
+    && ln -s "$SCRIPT_DIR/bash_profile.sh" "$HOME/.bash_profile"
+[[ ! -f $HOME/.bashrc ]] \
+    && echo "linking bashrc" \
+    && ln -s "$SCRIPT_DIR/bashrc.sh" "$HOME/.bashrc"
+[[ ! -f $HOME/.globalrc ]] \
+    && echo "linking globalrc" \
+	&& ln -s "$SCRIPT_DIR/globalrc.sh" "$HOME/.globalrc"
+[[ ! -f "$HOME/Library/Application Support/iTerm2/DynamicProfiles/profiles.json" ]] \
+    && echo "linking iterm profiles" \
+	&& ln -s "$SCRIPT_DIR/iterm_profiles.json" "$HOME/Library/Application Support/iTerm2/DynamicProfiles/profiles.json"
+[[ ! -f $HOME/.tmux.conf ]] \
+    && echo "linking tmux.conf" \
+	&& ln -s "$SCRIPT_DIR/tmux.conf" "$HOME/.tmux.conf"
+[[ ! -f $HOME/.vimrc ]] \
+    && echo "linking vimrc" \
+    && ln -s "$SCRIPT_DIR/vimrc" "$HOME/.vimrc"
 
 
 # ###################################################################### 
