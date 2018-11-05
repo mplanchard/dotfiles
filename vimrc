@@ -62,3 +62,9 @@ autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
 
 " Save ctrlp cache between sessions
 let g:ctrlp_clear_cache_on_exit = 0
+
+" Source local config if available
+if !empty(glob('~/.localvimrc'))
+    source ~/.localvimrc
+endif
+
