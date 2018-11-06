@@ -17,6 +17,7 @@ Plug 'davidhalter/jedi'
 Plug 'editorconfig/editorconfig-vim'
 Plug 'ekalinin/dockerfile.vim'
 Plug 'elzr/vim-json'
+Plug 'jacob-ogre/vim-syncr'
 Plug 'joshdick/onedark.vim'
 Plug 'kien/ctrlp.vim'
 Plug 'leafgarland/typescript-vim'
@@ -31,6 +32,7 @@ Plug 'scrooloose/nerdtree'
 Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-sensible'
 Plug 'Valloric/YouCompleteMe'
+Plug 'Vimjas/vim-python-pep8-indent'
 Plug 'w0rp/ale'
 
 call plug#end()
@@ -47,7 +49,7 @@ set expandtab
 
 " indention
 set autoindent
-set copyindent
+set nocopyindent
 set nosmartindent
 
 set backspace=indent,eol,start  " normal backspace
