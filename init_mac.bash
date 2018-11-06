@@ -148,6 +148,7 @@ fi
 # Install plugins
 vim +'PlugInstall --sync' +qa
 
+# It's important this be done after installing rust, cmake, & go
 (cd $HOME/.vim/bundle/YouCompleteMe && \
     ./install.py --clang-completer --rust-completer --go-completer)
 

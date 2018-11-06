@@ -1,3 +1,15 @@
+syntax on
+filetype plugin indent on
+
+" Plugin settings
+
+" ALE completion
+let g:ale_completion_enabled = 1
+" Save ctrlp cache between sessions
+let g:ctrlp_clear_cache_on_exit = 0
+" Ensure we get autocomplete for rust stdlib
+let g:ycm_rust_src_path = system('rustc --rpint sysroot')
+
 " Load plugins
 call plug#begin('~/.vim/bundle')
 
@@ -22,9 +34,6 @@ Plug 'Valloric/YouCompleteMe'
 Plug 'w0rp/ale'
 
 call plug#end()
-
-syntax on
-filetype plugin indent on
 
 " file locations
 set directory=~/.vim/swap
@@ -60,11 +69,8 @@ colorscheme onedark
 autocmd StdinReadPre * let s:std_in=1
 autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
 
-" Save ctrlp cache between sessions
-let g:ctrlp_clear_cache_on_exit = 0
 
 " Source local config if available
 if !empty(glob('~/.localvimrc'))
     source ~/.localvimrc
 endif
-
