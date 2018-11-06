@@ -64,6 +64,10 @@ set ruler
 set scrolloff=1  " show extra line above/below cursor
 set undolevels=1000
 
+" panes
+set splitright
+set splitbelow
+
 " Plugin enabled stuff
 colorscheme onedark
 
