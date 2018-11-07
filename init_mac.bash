@@ -83,7 +83,6 @@ brew install vim --with-python3 --with-override-system-vi || brew upgrade vim
 [[ ! -d "/Applications/Backup and Sync.app" ]] && brew cask install google-photos-backup-and-sync
 [[ ! -d /Applications/iTerm.app ]] && brew cask install iterm2
 [[ ! -d /Applications/Slack.app ]] && brew cask install slack
-[[ ! -d /Applications/Slack.app ]] && brew cask install slack
 [[ ! -d /Applications/Virtualbox.app ]] && brew cask install virtualbox
 [[ ! $(which vagrant) ]] && brew cask install vagrant
 [[ ! -d "/Applications/Vagrant Manager.app" ]] && brew cask install vagrant-manager
