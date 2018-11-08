@@ -51,6 +51,7 @@ set nowrap
 set number
 set ruler
 set scrolloff=1  " show extra line above/below cursor
+set spell spelllang=en_us  " spellcheck!
 set undolevels=1000
 
 " Plugin enabled stuff
@@ -62,3 +63,14 @@ autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
 
 " Save ctrlp cache between sessions
 let g:ctrlp_clear_cache_on_exit = 0
+
+" Use C-Space as a toggle to go to/from insert mode
+inoremap <C-Space> <Esc>
+" for some reason this is required for normal mode, rather than <C-Space>
+nnoremap <NUL> i
+
+
+" Maps to plugin commands
+nnoremap <C-s-f> :YcmCompleter GoTo<CR>
+nnoremap <C-S-b> :NERDTree<CR>
+
