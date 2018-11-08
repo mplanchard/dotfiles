@@ -26,32 +26,6 @@ mkdir -p $HOME/.vim/backup
 mkdir -p $HOME/.vim/swap
 
 # ###################################################################### 
-# Add Config Files
-# ###################################################################### 
-
-[[ ! -f $HOME/.aliases ]] \
-    && echo "linking alises" \
-    && ln -s "$SCRIPT_DIR/aliases.sh" "$HOME/.aliases"
-[[ ! -f $HOME/.bash_profile ]] \
-    && echo "linking bash_profile" \
-    && ln -s "$SCRIPT_DIR/bash_profile.sh" "$HOME/.bash_profile"
-[[ ! -f $HOME/.bashrc ]] \
-    && echo "linking bashrc" \
-    && ln -s "$SCRIPT_DIR/bashrc.sh" "$HOME/.bashrc"
-[[ ! -f $HOME/.globalrc ]] \
-    && echo "linking globalrc" \
-	&& ln -s "$SCRIPT_DIR/globalrc.sh" "$HOME/.globalrc"
-[[ ! -f "$HOME/Library/Application Support/iTerm2/DynamicProfiles/profiles.json" ]] \
-    && echo "linking iterm profiles" \
-	&& ln -s "$SCRIPT_DIR/iterm_profiles.json" "$HOME/Library/Application Support/iTerm2/DynamicProfiles/profiles.json"
-[[ ! -f $HOME/.tmux.conf ]] \
-    && echo "linking tmux.conf" \
-	&& ln -s "$SCRIPT_DIR/tmux.conf" "$HOME/.tmux.conf"
-[[ ! -f $HOME/.vimrc ]] \
-    && echo "linking vimrc" \
-    && ln -s "$SCRIPT_DIR/vimrc" "$HOME/.vimrc"
-
-# ###################################################################### 
 # Install Things
 # ###################################################################### 
 
@@ -109,7 +83,6 @@ brew install vim --with-python3 --with-override-system-vi || brew upgrade vim
 [[ ! -d "/Applications/Backup and Sync.app" ]] && brew cask install google-photos-backup-and-sync
 [[ ! -d /Applications/iTerm.app ]] && brew cask install iterm2
 [[ ! -d /Applications/Slack.app ]] && brew cask install slack
-[[ ! -d /Applications/Slack.app ]] && brew cask install slack
 [[ ! -d /Applications/Virtualbox.app ]] && brew cask install virtualbox
 [[ ! $(which vagrant) ]] && brew cask install vagrant
 [[ ! -d "/Applications/Vagrant Manager.app" ]] && brew cask install vagrant-manager
@@ -153,7 +126,6 @@ source "/usr/local/opt/nvm/nvm.sh" || true
 # Install most recent stable node
 nvm install stable
 nvm unalias default
-nvm install-latest-npm
 
 # Install jslint
 npm install -g eslint
@@ -175,6 +147,7 @@ fi
 # Install plugins
 vim +'PlugInstall --sync' +qa
 
+# It's important this be done after installing rust, cmake, & go
 (cd $HOME/.vim/bundle/YouCompleteMe && \
     ./install.py --clang-completer --rust-completer --go-completer)
 
@@ -290,6 +263,32 @@ echo "checking python2 packages"
 
 $HOME/.pyvenv/py2/bin/pip install $TO_INSTALL_ALL
 $HOME/.pyvenv/py2/bin/pip install $TO_INSTALL_PY2
+
+# ######################################################################
+# Add Config Files
+# ######################################################################
+
+[[ ! -f $HOME/.aliases ]] \
+    && echo "linking alises" \
+    && ln -s "$SCRIPT_DIR/aliases.sh" "$HOME/.aliases"
+[[ ! -f $HOME/.bash_profile ]] \
+    && echo "linking bash_profile" \
+    && ln -s "$SCRIPT_DIR/bash_profile.sh" "$HOME/.bash_profile"
+[[ ! -f $HOME/.bashrc ]] \
+    && echo "linking bashrc" \
+    && ln -s "$SCRIPT_DIR/bashrc.sh" "$HOME/.bashrc"
+[[ ! -f $HOME/.globalrc ]] \
+    && echo "linking globalrc" \
+	&& ln -s "$SCRIPT_DIR/globalrc.sh" "$HOME/.globalrc"
+[[ ! -f "$HOME/Library/Application Support/iTerm2/DynamicProfiles/profiles.json" ]] \
+    && echo "linking iterm profiles" \
+	&& ln -s "$SCRIPT_DIR/iterm_profiles.json" "$HOME/Library/Application Support/iTerm2/DynamicProfiles/profiles.json"
+[[ ! -f $HOME/.tmux.conf ]] \
+    && echo "linking tmux.conf" \
+	&& ln -s "$SCRIPT_DIR/tmux.conf" "$HOME/.tmux.conf"
+[[ ! -f $HOME/.vimrc ]] \
+    && echo "linking vimrc" \
+    && ln -s "$SCRIPT_DIR/vimrc" "$HOME/.vimrc"
 
 
 # ###################################################################### 

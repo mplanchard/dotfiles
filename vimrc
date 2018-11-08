@@ -1,3 +1,15 @@
+syntax on
+filetype plugin indent on
+
+" Plugin settings
+
+" ALE completion
+let g:ale_completion_enabled = 1
+" Save ctrlp cache between sessions
+let g:ctrlp_clear_cache_on_exit = 0
+" Ensure we get autocomplete for rust stdlib
+let g:ycm_rust_src_path = system('rustc --rpint sysroot')
+
 " Load plugins
 call plug#begin('~/.vim/bundle')
 
@@ -5,6 +17,7 @@ Plug 'davidhalter/jedi'
 Plug 'editorconfig/editorconfig-vim'
 Plug 'ekalinin/dockerfile.vim'
 Plug 'elzr/vim-json'
+Plug 'jacob-ogre/vim-syncr'
 Plug 'joshdick/onedark.vim'
 Plug 'kien/ctrlp.vim'
 Plug 'leafgarland/typescript-vim'
@@ -19,12 +32,10 @@ Plug 'scrooloose/nerdtree'
 Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-sensible'
 Plug 'Valloric/YouCompleteMe'
+Plug 'Vimjas/vim-python-pep8-indent'
 Plug 'w0rp/ale'
 
 call plug#end()
-
-syntax on
-filetype plugin indent on
 
 " file locations
 set directory=~/.vim/swap
@@ -38,7 +49,7 @@ set expandtab
 
 " indention
 set autoindent
-set copyindent
+set nocopyindent
 set nosmartindent
 
 set backspace=indent,eol,start  " normal backspace
@@ -54,12 +65,16 @@ set scrolloff=1  " show extra line above/below cursor
 set spell spelllang=en_us  " spellcheck!
 set undolevels=1000
 
+" panes
+set splitright
+set splitbelow
+
 " Plugin enabled stuff
 colorscheme onedark
 
-" Open nerdtree if vim invoked w/no files
-autocmd StdinReadPre * let s:std_in=1
-autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
+" Open nerdtree if vim invoked w/no files (decided I don't want this)
+" autocmd StdinReadPre * let s:std_in=1
+" autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
 
 " Save ctrlp cache between sessions
 let g:ctrlp_clear_cache_on_exit = 0
@@ -69,8 +84,11 @@ inoremap <C-Space> <Esc>
 " for some reason this is required for normal mode, rather than <C-Space>
 nnoremap <NUL> i
 
-
 " Maps to plugin commands
 nnoremap <C-s-f> :YcmCompleter GoTo<CR>
 nnoremap <C-S-b> :NERDTree<CR>
 
+" Source local config if available
+if !empty(glob('~/.localvimrc'))
+    source ~/.localvimrc
+endif
