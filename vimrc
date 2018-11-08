@@ -53,7 +53,7 @@ set nocopyindent
 set nosmartindent
 
 set backspace=indent,eol,start  " normal backspace
-set colorcolumn=79  " highlight column 79
+set colorcolumn=72,79,120  " highlight columns
 set history=1000
 set hlsearch  " highlight search matches
 set incsearch  " search incrementally
@@ -76,9 +76,6 @@ colorscheme onedark
 " autocmd StdinReadPre * let s:std_in=1
 " autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
 
-" Save ctrlp cache between sessions
-let g:ctrlp_clear_cache_on_exit = 0
-
 " Use C-Space as a toggle to go to/from insert mode
 inoremap <C-Space> <Esc>
 " for some reason this is required for normal mode, rather than <C-Space>
@@ -92,3 +89,6 @@ nnoremap <C-S-b> :NERDTree<CR>
 if !empty(glob('~/.localvimrc'))
     source ~/.localvimrc
 endif
+
+" Custom commands
+command EditModified args `git status -s \| awk '{print $NF}'` | argdo set eventignore-=Syntax | tabedit
