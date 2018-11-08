@@ -279,13 +279,13 @@ $HOME/.pyvenv/py2/bin/pip install $TO_INSTALL_PY2
     && ln -s "$SCRIPT_DIR/bashrc.sh" "$HOME/.bashrc"
 [[ ! -f $HOME/.globalrc ]] \
     && echo "linking globalrc" \
-	&& ln -s "$SCRIPT_DIR/globalrc.sh" "$HOME/.globalrc"
+    && ln -s "$SCRIPT_DIR/globalrc.sh" "$HOME/.globalrc"
 [[ ! -f "$HOME/Library/Application Support/iTerm2/DynamicProfiles/profiles.json" ]] \
     && echo "linking iterm profiles" \
-	&& ln -s "$SCRIPT_DIR/iterm_profiles.json" "$HOME/Library/Application Support/iTerm2/DynamicProfiles/profiles.json"
+    && ln -s "$SCRIPT_DIR/iterm_profiles.json" "$HOME/Library/Application Support/iTerm2/DynamicProfiles/profiles.json"
 [[ ! -f $HOME/.tmux.conf ]] \
     && echo "linking tmux.conf" \
-	&& ln -s "$SCRIPT_DIR/tmux.conf" "$HOME/.tmux.conf"
+    && ln -s "$SCRIPT_DIR/tmux.conf" "$HOME/.tmux.conf"
 [[ ! -f $HOME/.vimrc ]] \
     && echo "linking vimrc" \
     && ln -s "$SCRIPT_DIR/vimrc" "$HOME/.vimrc"
@@ -297,12 +297,8 @@ $HOME/.pyvenv/py2/bin/pip install $TO_INSTALL_PY2
 
 # Add `git lg` alias
 
-git config --global alias.lg " \
-    log \
-    --color \
-    --graph \
-    --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' \ 
-    --abbrev-commit"
+git config --global alias.lg \
+    "log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit"
 
 # Create a new SSH key for GitHub
 if [[ ! -f "$GH_KEYFILE" ]]; then
