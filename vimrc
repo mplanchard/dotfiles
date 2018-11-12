@@ -14,13 +14,15 @@ let g:ctrlp_custom_ignore = {
 let g:ctrlp_max_files = 0
 " Ensure we get autocomplete for rust stdlib
 let g:ycm_rust_src_path = system('rustc --rpint sysroot')
-
+" Don't use defualt settings for resize
+let g:vim_resize_disable_auto_mappings = 1
 
 set mouse=a
 
 " Load plugins
 call plug#begin('~/.vim/bundle')
 
+Plug 'breuckelen/vim-resize'
 Plug 'davidhalter/jedi'
 Plug 'editorconfig/editorconfig-vim'
 Plug 'ekalinin/dockerfile.vim'
@@ -85,7 +87,12 @@ nnoremap <C-j> <C-w>j
 nnoremap <C-h> <C-w>h
 nnoremap <C-k> <C-w>k
 nnoremap <C-l> <C-w>l
-
+" set pane resizing on mac to alt+j, alt+k, etc.
+nnoremap ˙ :CmdResizeLeft<CR>
+nnoremap ∆ :CmdResizeDown<CR>
+nnoremap ˚ :CmdResizeUp<CR>
+nnoremap ¬ :CmdResizeRight<CR>
+let g:resize_count = 5
 " Plugin enabled stuff
 colorscheme onedark
 
@@ -108,6 +115,3 @@ nnoremap <C-S-b> :NERDTree<CR>
 if !empty(glob('~/.localvimrc'))
     source ~/.localvimrc
 endif
-
-" Custom commands
-command EditModified args `git status -s \| awk '{print $NF}'` | argdo set eventignore-=Syntax | tabedit
