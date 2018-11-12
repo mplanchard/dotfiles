@@ -16,6 +16,8 @@ let g:ctrlp_max_files = 0
 let g:ycm_rust_src_path = system('rustc --rpint sysroot')
 " Don't use defualt settings for resize
 let g:vim_resize_disable_auto_mappings = 1
+" Ensure editorconfig plays well with fugitive
+let g:EditorConfig_exclude_patterns = ['fugitive://.*']
 
 set mouse=a
 
@@ -99,8 +101,6 @@ colorscheme onedark
 " Open nerdtree if vim invoked w/no files (decided I don't want this)
 " autocmd StdinReadPre * let s:std_in=1
 " autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
-" Close nerdtree after opening a file
-let NERDTreeQuitOnOpen = 1
 
 " Use C-Space as a toggle to go to/from insert mode
 inoremap <C-Space> <Esc>

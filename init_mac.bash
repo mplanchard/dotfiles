@@ -53,6 +53,7 @@ BREW_PKGS=" \
     bash-completion \
     bat \
     cmake \
+    editorconfig \
     exa \
     fd \
     git \
