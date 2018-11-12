@@ -7,8 +7,16 @@ filetype plugin indent on
 let g:ale_completion_enabled = 1
 " Save ctrlp cache between sessions
 let g:ctrlp_clear_cache_on_exit = 0
+" Ignore stuff I don't search for
+let g:ctrlp_custom_ignore = {
+	\ 'dir': '\v[\/]\.?(git|hg|build|dist)$'
+	\ }
+let g:ctrlp_max_files = 0
 " Ensure we get autocomplete for rust stdlib
 let g:ycm_rust_src_path = system('rustc --rpint sysroot')
+
+
+set mouse=a
 
 " Load plugins
 call plug#begin('~/.vim/bundle')
@@ -33,6 +41,7 @@ Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-sensible'
 Plug 'Valloric/YouCompleteMe'
 Plug 'Vimjas/vim-python-pep8-indent'
+Plug 'christoomey/vim-tmux-navigator'
 Plug 'w0rp/ale'
 
 call plug#end()
@@ -54,20 +63,28 @@ set nosmartindent
 
 set backspace=indent,eol,start  " normal backspace
 set colorcolumn=72,79,120  " highlight columns
+set foldmethod=syntax
 set history=1000
 set hlsearch  " highlight search matches
 set incsearch  " search incrementally
+set ignorecase 
 set noerrorbells
 set nowrap
 set number
 set ruler
 set scrolloff=1  " show extra line above/below cursor
+set showmatch  " matching parens
+set smartcase  " lowercase is insensitive, specified case is sensitive
 set spell spelllang=en_us  " spellcheck!
 set undolevels=1000
 
 " panes
 set splitright
 set splitbelow
+nnoremap <C-j> <C-w>j
+nnoremap <C-h> <C-w>h
+nnoremap <C-k> <C-w>k
+nnoremap <C-l> <C-w>l
 
 " Plugin enabled stuff
 colorscheme onedark
@@ -75,6 +92,8 @@ colorscheme onedark
 " Open nerdtree if vim invoked w/no files (decided I don't want this)
 " autocmd StdinReadPre * let s:std_in=1
 " autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
+" Close nerdtree after opening a file
+let NERDTreeQuitOnOpen = 1
 
 " Use C-Space as a toggle to go to/from insert mode
 inoremap <C-Space> <Esc>
