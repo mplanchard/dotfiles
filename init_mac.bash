@@ -219,6 +219,7 @@ TO_INSTALL=" \
     redhat.vscode-yaml \
     robertohuertasm.vscode-icons \
     rust-lang.rust \
+    shd101wyy.markdown-preview-enhanced \
     streetsidesoftware.code-spell-checker \
     vadimcn.vscode-lldb \
     vscode-ext.sync-rsync \
