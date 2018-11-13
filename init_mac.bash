@@ -9,6 +9,27 @@ GH_KEYFILE="$HOME/.ssh/github_rsa"
 SSH_CONF="$HOME/.ssh/config"
 SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null && pwd )"
 
+FORCE=""
+
+# Right now the only option is `-f`, which will overwrite any local
+# config files even if they exist.
+while getopts ":f" opt; do
+	case $opt in
+		f)
+            echo "WARNING: 'force' specified. Existing configs will be overwritten."
+			FORCE=1
+			;;
+		\?)
+			echo "Invalid option: -$OPTARG" >&2
+	  		exit 1
+		  	;;
+		:)
+		  	echo "Option -$OPTARG requires an argument." >&2
+		  	exit 1
+		  	;;
+	esac
+done
+
 # ######################################################################
 # Add useful directories
 # ######################################################################
@@ -149,9 +170,15 @@ fi
 # Install plugins
 vim +'PlugInstall --sync' +qa
 
-# It's important this be done after installing rust, cmake, & go
-(cd $HOME/.vim/bundle/YouCompleteMe && \
-    ./install.py --clang-completer --rust-completer --go-completer)
+# A little sign on the wall to let us know we've been here
+COMPILED="$HOME/.vim/bundle/YouCompleteMe/.has-been-built"
+
+if [[ ! -f "$COMPILED" ]]; then
+    # It's important this be done after installing rust, cmake, & go
+    (cd $HOME/.vim/bundle/YouCompleteMe && \
+        ./install.py --clang-completer --rust-completer --go-completer)
+    touch "$COMPILED"
+fi
 
 
 # Temporarily disabled due to this bug: 
@@ -220,10 +247,15 @@ SETTINGS_DIR="$HOME/Library/Application Support/Code/User"
 mkdir -p "$SETTINGS_DIR"
 
 SETTINGS_FILE="$SETTINGS_DIR/settings.json"
+KEYBINDINGS_FILE="$SETTINGS_DIR/keybindings.json"
 
-[[ ! -f "$SETTINGS_FILE" ]] \
+[[ ! -f "$SETTINGS_FILE" || "$FORCE" ]] \
     && echo "updating user settings for vscode" \
-    && ln -s "$HOME/github/mplanchard/vscode-settings/user-settings.json" "$SETTINGS_FILE"
+    && ln -fs "$HOME/github/mplanchard/vscode-settings/user-settings.json" "$SETTINGS_FILE"
+
+[[ ! -f "$KEYBINDINGS_FILE" || "$FORCE" ]] \
+    && echo "updating user keyboard settings for vscode" \
+    && ln -fs "$HOME/github/mplanchard/vscode-settings/keybindings.json" "$KEYBINDINGS_FILE"
 
 
 # ###################################################################### 
@@ -270,27 +302,27 @@ $HOME/.pyvenv/py2/bin/pip install $TO_INSTALL_PY2
 # Add Config Files
 # ######################################################################
 
-[[ ! -f $HOME/.aliases ]] \
+[[ ! -f $HOME/.aliases || "$FORCE" ]] \
     && echo "linking alises" \
-    && ln -s "$SCRIPT_DIR/aliases.sh" "$HOME/.aliases"
-[[ ! -f $HOME/.bash_profile ]] \
+    && ln -fs "$SCRIPT_DIR/aliases.sh" "$HOME/.aliases"
+[[ ! -f $HOME/.bash_profile || "$FORCE" ]] \
     && echo "linking bash_profile" \
-    && ln -s "$SCRIPT_DIR/bash_profile.sh" "$HOME/.bash_profile"
-[[ ! -f $HOME/.bashrc ]] \
+    && ln -fs "$SCRIPT_DIR/bash_profile.sh" "$HOME/.bash_profile"
+[[ ! -f $HOME/.bashrc || "$FORCE" ]] \
     && echo "linking bashrc" \
-    && ln -s "$SCRIPT_DIR/bashrc.sh" "$HOME/.bashrc"
-[[ ! -f $HOME/.globalrc ]] \
+    && ln -fs "$SCRIPT_DIR/bashrc.sh" "$HOME/.bashrc"
+[[ ! -f $HOME/.globalrc || "$FORCE" ]] \
     && echo "linking globalrc" \
-    && ln -s "$SCRIPT_DIR/globalrc.sh" "$HOME/.globalrc"
-[[ ! -f "$HOME/Library/Application Support/iTerm2/DynamicProfiles/profiles.json" ]] \
+    && ln -fs "$SCRIPT_DIR/globalrc.sh" "$HOME/.globalrc"
+[[ ! -f "$HOME/Library/Application Support/iTerm2/DynamicProfiles/profiles.json" || "$FORCE" ]] \
     && echo "linking iterm profiles" \
-    && ln -s "$SCRIPT_DIR/iterm_profiles.json" "$HOME/Library/Application Support/iTerm2/DynamicProfiles/profiles.json"
-[[ ! -f $HOME/.tmux.conf ]] \
+    && ln -fs "$SCRIPT_DIR/iterm_profiles.json" "$HOME/Library/Application Support/iTerm2/DynamicProfiles/profiles.json"
+[[ ! -f $HOME/.tmux.conf || "$FORCE" ]] \
     && echo "linking tmux.conf" \
-    && ln -s "$SCRIPT_DIR/tmux.conf" "$HOME/.tmux.conf"
-[[ ! -f $HOME/.vimrc ]] \
+    && ln -fs "$SCRIPT_DIR/tmux.conf" "$HOME/.tmux.conf"
+[[ ! -f $HOME/.vimrc || "$FORCE" ]] \
     && echo "linking vimrc" \
-    && ln -s "$SCRIPT_DIR/vimrc" "$HOME/.vimrc"
+    && ln -fs "$SCRIPT_DIR/vimrc" "$HOME/.vimrc"
 
 
 # ###################################################################### 
