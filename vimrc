@@ -4,7 +4,7 @@ filetype plugin indent on
 " Plugin settings
 
 " ALE completion
-let g:ale_completion_enabled = 1
+" let g:ale_completion_enabled = 1
 " Save ctrlp cache between sessions
 let g:ctrlp_clear_cache_on_exit = 0
 " Ignore stuff I don't search for
@@ -13,8 +13,8 @@ let g:ctrlp_custom_ignore = {
 	\ }
 let g:ctrlp_max_files = 0
 " Ensure we get autocomplete for rust stdlib
-let g:ycm_rust_src_path = system('rustc --rpint sysroot')
-" Don't use defualt settings for resize
+let g:ycm_rust_src_path = system('rustc --print sysroot')
+" Don't use default settings for resize
 let g:vim_resize_disable_auto_mappings = 1
 " Ensure editorconfig plays well with fugitive
 let g:EditorConfig_exclude_patterns = ['fugitive://.*']
@@ -108,8 +108,8 @@ inoremap <C-Space> <Esc>
 nnoremap <NUL> i
 
 " Maps to plugin commands
-nnoremap <C-s-f> :YcmCompleter GoTo<CR>
-nnoremap <C-S-b> :NERDTree<CR>
+nnoremap <C-f> :YcmCompleter GoTo<CR>
+nnoremap <C-b> :NERDTree<CR>
 
 " Source local config if available
 if !empty(glob('~/.localvimrc'))

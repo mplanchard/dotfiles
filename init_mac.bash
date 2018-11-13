@@ -60,7 +60,8 @@ BREW_PKGS=" \
     go \
     mas \
     nvm \
-    python3 \
+    python \
+    python@2 \
     ripgrep \
     tmux \
     tokei \
