@@ -1,0 +1,8 @@
+[package]
+name = "dotfiles"
+version = "0.1.0"
+authors = ["Matthew Planchard <msplanchard@gmail.com>"]
+
+[dependencies]
+clap = "~2.32"
+log = "0.4"
