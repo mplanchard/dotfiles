@@ -209,6 +209,7 @@ TO_INSTALL=" \
     DavidAnson.vscode-markdownlint \
     dbaeumer.vscode-eslint \
     eamodio.gitlens \
+    EditorConfig.EditorConfig \
     eg2.tslint \
     eg2.vscode-npm-script \
     HookyQR.beautify \
