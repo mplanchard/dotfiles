@@ -167,9 +167,6 @@ if [[ ! -f "$HOME/.vim/autoload/plug.vim" ]]; then
         https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
 fi
 
-# Install plugins
-vim +'PlugInstall --sync' +qa
-
 # A little sign on the wall to let us know we've been here
 COMPILED="$HOME/.vim/bundle/YouCompleteMe/.has-been-built"
 
@@ -181,22 +178,20 @@ if [[ ! -f "$COMPILED" ]]; then
 fi
 
 
-# Temporarily disabled due to this bug: 
-#   https://github.com/mas-cli/mas/issues/182
 # Install Magnet from the app store
-# echo "checking magnet install"
-# MAGNET_ID=$(mas search magnet | grep "Magnet (" | awk '{print $1}')
-# mas install "$MAGNET_ID"
-# 
-# # Install 1password from the app store
-# echo "checking 1password install"
-# ONEPW_ID=$(mas search 1Password | grep "1Password 7 - Password Manager (" | awk '{print $1}')
-# mas install "$ONEPW_ID"
-# 
-# # Install amphetamine
-# echo "checking amphetamine install"
-# AMPHETAMINE_ID=$(mas search Amphetamine | grep "Amphetamine (" | awk '{print $1}')
-# mas install "$AMPHETAMINE_ID"
+echo "checking magnet install"
+ MAGNET_ID=$(mas search magnet | /usr/local/bin/rg "Magnet +\(" | awk '{print $1}')
+ mas install "$MAGNET_ID"
+
+ # Install 1password from the app store
+ echo "checking 1password install"
+ ONEPW_ID=$(mas search 1Password | /usr/local/bin/rg "1Password 7 - Password Manager +\(" | awk '{print $1}')
+ mas install "$ONEPW_ID"
+ 
+ # Install amphetamine
+ echo "checking amphetamine install"
+ AMPHETAMINE_ID=$(mas search Amphetamine | /usr/local/bin/rg "Amphetamine +\(" | awk '{print $1}')
+ mas install "$AMPHETAMINE_ID"
 
 # ###################################################################### 
 # Configure VSCode
@@ -301,7 +296,7 @@ $HOME/.pyvenv/py2/bin/pip install $TO_INSTALL_ALL
 $HOME/.pyvenv/py2/bin/pip install $TO_INSTALL_PY2
 
 # ######################################################################
-# Add Config Files
+# Add/Update Config Files
 # ######################################################################
 
 [[ ! -f $HOME/.aliases || "$FORCE" ]] \
@@ -325,6 +320,10 @@ $HOME/.pyvenv/py2/bin/pip install $TO_INSTALL_PY2
 [[ ! -f $HOME/.vimrc || "$FORCE" ]] \
     && echo "linking vimrc" \
     && ln -fs "$SCRIPT_DIR/vimrc" "$HOME/.vimrc"
+
+
+# Synchronize vim plugins
+vim +'PlugInstall --sync' +qa
 
 
 # ###################################################################### 
