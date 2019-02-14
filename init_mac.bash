@@ -157,6 +157,7 @@ source "/usr/local/opt/nvm/nvm.sh" || true
 nvm install stable
 
 npm install -g \
+    bash-language-server \
     javascript-typescript-langserver \
     neovim \
     typescript

@@ -12,9 +12,10 @@ let g:EditorConfig_exclude_patterns = ['fugitive://.*']
 let g:deoplete#enable_at_startup = 1
 
 let g:LanguageClient_serverCommands = {
-    \ 'rust': ['~/.cargo/bin/rustup', 'run', 'nightly', 'rls'],
     \ 'javascript': ['/usr/local/bin/javascript-typescript-stdio'],
     \ 'python': ['/usr/local/bin/pyls'],
+    \ 'rust': ['~/.cargo/bin/rustup', 'run', 'nightly', 'rls'],
+    \ 'sh': ['/usr/local/bin/bash-language-server', 'start'],
     \ }
 
 let g:netrw_banner = 0
