@@ -12,8 +12,6 @@ let g:vim_resize_disable_auto_mappings = 1
 " Ensure editorconfig plays well with fugitive
 let g:EditorConfig_exclude_patterns = ['fugitive://.*']
 
-let g:python3_host_prog = "/usr/local/bin/python3"
-
 let g:deoplete#enable_at_startup = 1
 
 let g:LanguageClient_serverCommands = {
@@ -42,6 +40,7 @@ Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
 Plug '/usr/local/opt/fzf'
 
 " (Optional) Multi-entry selection UI.
+Plug 'airblade/vim-gitgutter'
 Plug 'breuckelen/vim-resize'
 Plug 'davidhalter/jedi'
 Plug 'editorconfig/editorconfig-vim'

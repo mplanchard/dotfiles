@@ -158,6 +158,7 @@ nvm install stable
 
 npm install -g \
     javascript-typescript-langserver \
+    neovim \
     typescript
 
 
@@ -389,7 +390,8 @@ EOF
     echo "Added github.com host entry to SSH config"
 fi
 
-ssh-add -K $GH_KEYFILE
+# Non-standard Mac ssh agents don't have the -K option
+ssh-add -K $GH_KEYFILE || ssh-add $GH_KEYFILE
 
 ## GH Settings to add an SSH key
 if [[ "$CREATED_GH_KEY" ]]; then
