@@ -3,7 +3,7 @@ alias cloc='tokei'
 alias find='fd'
 alias grep='rg'
 alias ls='exa -F --group-directories-first'
-alias ll='ls -lga@hF --git --group-directories-first'
+alias ll='ls -lga@hF --group-directories-first'
 alias rm='rm -i'
 alias vim='/usr/local/bin/vim'
 
