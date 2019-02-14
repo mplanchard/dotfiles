@@ -3,10 +3,7 @@ filetype plugin indent on
 
 " Plugin settings
 
-" ALE completion
-" let g:ale_completion_enabled = 1
-" Ensure we get autocomplete for rust stdlib
-let g:ycm_rust_src_path = system('rustc --print sysroot')
+let g:NERDTreeShowHidden=1
 " Don't use default settings for resize
 let g:vim_resize_disable_auto_mappings = 1
 " Ensure editorconfig plays well with fugitive
@@ -25,7 +22,6 @@ let g:netrw_liststyle = 3
 let g:netrw_browse_split = 4
 let g:netrw_altv = 1
 let g:netrw_winsize = 25
-
 set mouse=a
 
 " Load plugins
@@ -98,13 +94,31 @@ set smartcase  " lowercase is insensitive, specified case is sensitive
 set spell spelllang=en_us  " spellcheck!
 set undolevels=1000
 
+" deoplete stuff
+set completeopt+=noinsert
+inoremap <silent><expr> <TAB> pumvisible() ? deoplete#close_popup() : "\<TAB>"
+inoremap <silent> <CR> <C-r>=<SID>my_cr_function()<CR>
+function! s:my_cr_function() abort
+    return deoplete#close_popup() . "\<CR>"
+endfunction
+
 " panes
 set splitright
 set splitbelow
-nnoremap <C-j> <C-w>j
-nnoremap <C-h> <C-w>h
-nnoremap <C-k> <C-w>k
-nnoremap <C-l> <C-w>l
+tnoremap <Esc> <C-\><C-N>
+" handled by tmux plugin
+"nnoremap <C-j> <C-w>j
+"nnoremap <C-h> <C-w>h
+"nnoremap <C-k> <C-w>k
+"nnoremap <C-l> <C-w>l
+tnoremap <C-h> <C-\><C-N><C-w>h
+tnoremap <C-j> <C-\><C-N><C-w>j
+tnoremap <C-k> <C-\><C-N><C-w>k
+tnoremap <C-l> <C-\><C-N><C-w>l
+inoremap <C-h> <C-\><C-N><C-w>h
+inoremap <C-j> <C-\><C-N><C-w>j
+inoremap <C-k> <C-\><C-N><C-w>k
+inoremap <C-l> <C-\><C-N><C-w>l
 " set pane resizing on mac to alt+j, alt+k, etc.
 nnoremap ˙ :CmdResizeLeft<CR>
 nnoremap ∆ :CmdResizeDown<CR>
@@ -113,10 +127,6 @@ nnoremap ¬ :CmdResizeRight<CR>
 let g:resize_count = 5
 " Plugin enabled stuff
 colorscheme onedark
-
-" Open nerdtree if vim invoked w/no files (decided I don't want this)
-" autocmd StdinReadPre * let s:std_in=1
-" autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
 
 " Use C-Space as a toggle to go to/from insert mode
 inoremap <C-Space> <Esc>
@@ -134,6 +144,9 @@ nnoremap <F5> :call LanguageClient_contextMenu()<CR>
 nnoremap <silent> K :call LanguageClient#textDocument_hover()<CR>
 nnoremap <silent> gd :call LanguageClient#textDocument_definition()<CR>
 nnoremap <silent> <F2> :call LanguageClient#textDocument_rename()<CR>
+
+" Remove whitespace for files
+autocmd FileType c,cpp,java,php,py,js,ts autocmd BufWritePre <buffer> %s/\s\+$//e
 
 " Source local config if available
 if !empty(glob('~/.localvimrc'))
