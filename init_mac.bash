@@ -37,6 +37,9 @@ done
 # Create a ~/tmp directory
 mkdir -p $HOME/tmp
 
+# Create neovim config directory
+mkdir -p $HOME/.config/nvim
+
 # For python virtual environments
 mkdir -p $HOME/.pyvenv
 
@@ -60,11 +63,6 @@ if [[ ! $(which brew) ]]; then
     /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
 fi
 
-# Try to update xcode cli tools
-if [[ ! $(xcode-select --version) ]]; then
-    xcode-select --install
-fi
-
 # Install packages from Homebrew
 export HOMEBREW_NO_AUTO_UPDATE=1
 
@@ -77,15 +75,18 @@ BREW_PKGS=" \
     editorconfig \
     exa \
     fd \
+    fzf \
     git \
     go \
     mas \
+    neovim \
     nvm \
     python \
     python@2 \
     ripgrep \
     tmux \
     tokei \
+    vim \
     wget"
 
 echo "checking brew packages for installs or updates"
@@ -93,9 +94,6 @@ echo "checking brew packages for installs or updates"
 for PKG in $BREW_PKGS; do
     brew install $PKG || brew upgrade $PKG
 done
-
-# Vim needs some special args
-brew install vim --with-python3 --with-override-system-vi || brew upgrade vim
 
 [[ ! -d /Applications/Docker.app ]] && brew cask install docker
 [[ ! -d /Applications/Dropbox.app ]] && brew cask install dropbox
@@ -139,8 +137,17 @@ if [[ ! $(which rustc) ]]; then
     echo "installing rust"
     curl https://sh.rustup.rs -sSf | sh
 fi
-rustup component add rust-src
+
 rustup update
+rustup install nightly
+rustup component add rls-preview rust-analysis rust-src --toolchain stable
+rustup component add rust-analysis rust-src --toolchain nightly
+
+# sometimes this is not available on nightly if rustc broke something
+rustup component list --toolchain nightly | grep -q rls && \
+    rustup component add rls-preview --toolchain nightly
+
+rustup default nightly
 
 # Update paths as required for later commands
 export NVM_DIR="$HOME/.nvm"
@@ -148,35 +155,17 @@ source "/usr/local/opt/nvm/nvm.sh" || true
 
 # Install most recent stable node
 nvm install stable
-nvm unalias default
 
-# Install jslint
-npm install -g eslint
+npm install -g \
+    javascript-typescript-langserver \
+    typescript
 
-# Install typescript
-npm install -g typescript tslint
-
-
-# **********************************************************************
-# Vim plugins
-# **********************************************************************
 
 # Install vim-plug
 if [[ ! -f "$HOME/.vim/autoload/plug.vim" ]]; then
     curl -fLo ~/.vim/autoload/plug.vim --create-dirs \
         https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
 fi
-
-# A little sign on the wall to let us know we've been here
-COMPILED="$HOME/.vim/bundle/YouCompleteMe/.has-been-built"
-
-if [[ ! -f "$COMPILED" ]]; then
-    # It's important this be done after installing rust, cmake, & go
-    (cd $HOME/.vim/bundle/YouCompleteMe && \
-        ./install.py --clang-completer --rust-completer --go-completer)
-    touch "$COMPILED"
-fi
-
 
 # Install Magnet from the app store
 echo "checking magnet install"
@@ -200,6 +189,7 @@ echo "checking magnet install"
 CODE="/Applications/Visual Studio Code.app/Contents/Resources/app/bin/code"
 INSTALLED_EXTENSIONS=$("$CODE" --list-extensions)
 TO_INSTALL=" \
+    buenon.scratchpads \
     bungcip.better-toml \
     DavidAnson.vscode-markdownlint \
     dbaeumer.vscode-eslint \
@@ -259,8 +249,23 @@ KEYBINDINGS_FILE="$SETTINGS_DIR/keybindings.json"
 # Install Python venvs
 # ###################################################################### 
 
-# Install virtualenv for python 3
-/usr/local/bin/pip3 install virtualenv
+/usr/local/bin/pip2 install -U \
+    ipdb \
+    python-language-server[all] \
+    pyls-isort \
+    pynvim \
+    pytest 
+
+# Install globally available python packages
+/usr/local/bin/pip3 install -U \
+    ipdb \
+    python-language-server[all] \
+    pyls-black \
+    pyls-isort \
+    pyls-mypy \
+    pynvim \
+    pytest \
+    virtualenv 
 
 # Create python vritual environments
 [[ ! -d $HOME/.pyvenv/py3 ]] \
@@ -320,6 +325,9 @@ $HOME/.pyvenv/py2/bin/pip install $TO_INSTALL_PY2
 [[ ! -f $HOME/.vimrc || "$FORCE" ]] \
     && echo "linking vimrc" \
     && ln -fs "$SCRIPT_DIR/vimrc" "$HOME/.vimrc"
+[[ ! -f $HOME/.config/nvim/init.vim || "$FORCE" ]] \
+    && echo "linking neovim config" \
+    && ln -fs "$SCRIPT_DIR/init.vim" "$HOME/.config/nvim/init.vim"
 
 
 # Synchronize vim plugins
@@ -386,5 +394,10 @@ ssh-add -K $GH_KEYFILE
 ## GH Settings to add an SSH key
 if [[ "$CREATED_GH_KEY" ]]; then
     open https://github.com/settings/keys
+fi
+
+# Try to update xcode cli tools
+if [[ ! $(xcode-select --version) ]]; then
+    xcode-select --install
 fi
 

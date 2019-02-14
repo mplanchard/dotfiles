@@ -6,6 +6,9 @@ export EDITOR="vim"
 # Vim cmdline mode
 set -o vi
 
+# GPG interactivity
+export GPG_TTY=$(tty)
+
 # Source aliases
 [ -f $HOME/.aliases ] && . $HOME/.aliases
 
