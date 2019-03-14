@@ -138,14 +138,22 @@ if [[ ! $(which rustc) ]]; then
     curl https://sh.rustup.rs -sSf | sh
 fi
 
-rustup update
+
+rustup update stable
 rustup install nightly
+
 rustup component add rls-preview rust-analysis rust-src --toolchain stable
 rustup component add rust-analysis rust-src --toolchain nightly
 
-# sometimes this is not available on nightly if rustc broke something
-rustup component list --toolchain nightly | grep -q rls && \
+if curl https://static.rust-lang.org/dist/channel-rust-nightly.toml 2>/dev/null | grep -q 'rls-preview' 
+then
+    rustup update nightly
     rustup component add rls-preview --toolchain nightly
+else
+    echo 'latest nightly is missing rls' >&2
+    exit 1
+fi
+
 
 rustup default nightly
 
