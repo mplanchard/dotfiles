@@ -100,10 +100,7 @@ set undolevels=1000
 " deoplete stuff
 set completeopt+=noinsert
 inoremap <silent><expr> <TAB> pumvisible() ? deoplete#close_popup() : "\<TAB>"
-inoremap <silent> <CR> <C-r>=<SID>my_cr_function()<CR>
-function! s:my_cr_function() abort
-    return deoplete#close_popup() . "\<CR>"
-endfunction
+inoremap <silent><expr> <CR> pumvisible() ? "\<C-e>\<CR>" : "\<CR>"
 
 " panes
 set splitright
