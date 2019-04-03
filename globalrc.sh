@@ -6,6 +6,9 @@ export EDITOR="vim"
 # Vim cmdline mode
 set -o vi
 
+# Direnv
+eval "$(direnv hook bash)"
+
 # GPG interactivity
 export GPG_TTY=$(tty)
 

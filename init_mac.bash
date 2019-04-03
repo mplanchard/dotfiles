@@ -72,12 +72,14 @@ BREW_PKGS=" \
     bash-completion \
     bat \
     cmake \
+    direnv \
     editorconfig \
     exa \
     fd \
     fzf \
     git \
     go \
+    gpg \
     mas \
     neovim \
     nvm \
@@ -138,6 +140,8 @@ if [[ ! $(which rustc) ]]; then
     curl https://sh.rustup.rs -sSf | sh
 fi
 
+source $HOME/.cargo/env
+
 rustup update
 rustup install nightly
 rustup component add rls-preview rust-analysis rust-src --toolchain stable
@@ -179,6 +183,11 @@ echo "checking magnet install"
  ONEPW_ID=$(mas search 1Password | /usr/local/bin/rg "1Password 7 - Password Manager +\(" | awk '{print $1}')
  mas install "$ONEPW_ID"
  
+ # Install 1password from the app store
+ echo "checking Evernote install"
+EVERNOTE_ID=$(mas search Evernote | /usr/local/bin/rg "^ +\d+ +Evernote +\(" | awk '{print $1}')
+ mas install "$EVERNOTE_ID"
+
  # Install amphetamine
  echo "checking amphetamine install"
  AMPHETAMINE_ID=$(mas search Amphetamine | /usr/local/bin/rg "Amphetamine +\(" | awk '{print $1}')
@@ -205,7 +214,6 @@ TO_INSTALL=" \
     ms-vscode.cpptools \
     PeterJausovec.vscode-docker \
     redhat.vscode-yaml \
-    robertohuertasm.vscode-icons \
     rust-lang.rust \
     shd101wyy.markdown-preview-enhanced \
     streetsidesoftware.code-spell-checker \

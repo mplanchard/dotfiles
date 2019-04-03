@@ -10,3 +10,5 @@ export PS1="\[\033[38;5;13m\][\[$(tput sgr0)\]\[\033[38;5;10m\]\$?\[$(tput sgr0)
 # Enable bash completion
 [ -f /usr/local/etc/bash_completion ] && . /usr/local/etc/bash_completion
 
+# Direnv support
+eval "$(direnv hook bash)"
