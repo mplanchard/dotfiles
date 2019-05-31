@@ -18,6 +18,8 @@ let g:LanguageClient_serverCommands = {
     \ 'sh': ['/usr/local/bin/bash-language-server', 'start'],
     \ }
 
+let g:python3_host_prog = '/usr/local/bin/python3'
+
 let g:netrw_banner = 0
 let g:netrw_liststyle = 3
 let g:netrw_browse_split = 4
