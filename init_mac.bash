@@ -154,11 +154,8 @@ then
     rustup component add clippy rls-preview --toolchain nightly
 else
     echo 'latest nightly is missing rls' >&2
-    exit 1
 fi
 
-
-rustup default nightly
 
 # Update paths as required for later commands
 export NVM_DIR="$HOME/.nvm"

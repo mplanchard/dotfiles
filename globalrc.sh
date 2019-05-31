@@ -6,7 +6,7 @@ if [[ -n $VIRTUAL_ENV && -e "${VIRTUAL_ENV}/bin/activate" ]]; then
 fi
 
 # Set EDITOR
-export EDITOR="vim"
+export EDITOR="nvim"
 
 # Vim cmdline mode
 set -o vi
