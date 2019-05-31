@@ -148,10 +148,12 @@ rustup install nightly
 rustup component add rustfmt rls-preview clippy rust-analysis rust-src --toolchain stable
 rustup component add rustfmt rust-analysis rust-src --toolchain nightly
 
-if curl https://static.rust-lang.org/dist/channel-rust-nightly.toml 2>/dev/null | grep -q 'rls-preview' 
-then
-    rustup update nightly
-    rustup component add clippy rls-preview --toolchain nightly
+nightly_tools=$(curl https://static.rust-lang.org/dist/channel-rust-nightly.toml)
+rls_available=$(echo "$nightly_tools" | grep -q 'rls-preview')
+clippy_available=$(echo "$nightly_tools" | grep -q 'clippy')
+if [[ "$rls_available" && "$clippy_available" ]]; then
+    rustup update nightly 
+    rustup component add clippy rls-preview --toolchain nightly 
 else
     echo 'latest nightly is missing rls' >&2
 fi
