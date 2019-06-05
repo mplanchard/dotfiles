@@ -90,12 +90,17 @@ set ignorecase
 set noerrorbells
 set nowrap
 set number
+set relativenumber
 set ruler
 set scrolloff=1  " show extra line above/below cursor
 set showmatch  " matching parens
 set smartcase  " lowercase is insensitive, specified case is sensitive
 set spell spelllang=en_us  " spellcheck!
 set undolevels=1000
+
+" Disable relative line numbers in insert mode
+au! InsertLeave * set relativenumber
+au! InsertEnter * set relativenumber!
 
 " deoplete stuff
 set completeopt+=noinsert
