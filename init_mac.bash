@@ -49,9 +49,9 @@ mkdir -p $HOME/.vim/backup
 # For vim swaps
 mkdir -p $HOME/.vim/swap
 
-# ###################################################################### 
+# ######################################################################
 # Install Things
-# ###################################################################### 
+# ######################################################################
 
 # **********************************************************************
 # Brew
@@ -83,6 +83,7 @@ BREW_PKGS=" \
     mas \
     neovim \
     nvm \
+    pyenv \
     python \
     python@2 \
     ripgrep \
@@ -97,6 +98,7 @@ for PKG in $BREW_PKGS; do
     brew install $PKG || brew upgrade $PKG
 done
 
+[[ ! -d /Applications/Alacritty.app ]] && brew cask install alacritty
 [[ ! -d /Applications/Docker.app ]] && brew cask install docker
 [[ ! -d /Applications/Dropbox.app ]] && brew cask install dropbox
 [[ ! -d "/Applications/Firefox Developer Edition.app" ]] && brew cask install homebrew/cask-versions/firefox-developer-edition
@@ -117,6 +119,7 @@ brew tap homebrew/cask-fonts
 brew cask install font-powerline-symbols
 brew cask install font-menlo-for-powerline
 brew cask install font-fira-mono-for-powerline
+brew cask install font-source-code-pro
 
 unset HOMEBREW_NO_AUTO_UPDATE
 
@@ -131,7 +134,21 @@ if [[ ! -d "$HOME/github/jimeh/tmux-themepack" ]]; then
 fi
 
 # **********************************************************************
-# Languages & Stuff
+# Alacritty
+# **********************************************************************
+
+mkdir -p /usr/local/share/man/man1
+if [[ ! -d "$HOME/github/jwilm/alacritty" ]]; then
+    git clone https://github.com/jwilm/alacritty.git $HOME/github/jwilm/alacritty
+	# man page
+    gzip -c $HOME/github/jwilm/alacritty/extra/alacritty.man \
+        | tee /usr/local/share/man/man1/alacritty.1.gz > /dev/null
+	# terminfo
+    tic -xe alacritty,alacritty-direct extra/alacritty.info
+fi
+
+# **********************************************************************
+# Rust
 # **********************************************************************
 
 # Install Rust
@@ -152,11 +169,21 @@ nightly_tools=$(curl https://static.rust-lang.org/dist/channel-rust-nightly.toml
 rls_available=$(echo "$nightly_tools" | grep -q 'rls-preview')
 clippy_available=$(echo "$nightly_tools" | grep -q 'clippy')
 if [[ "$rls_available" && "$clippy_available" ]]; then
-    rustup update nightly 
-    rustup component add clippy rls-preview --toolchain nightly 
+    rustup update nightly
+    rustup component add clippy rls-preview --toolchain nightly
 else
     echo 'latest nightly is missing rls' >&2
 fi
+
+# **********************************************************************
+# Python
+# **********************************************************************
+
+pyenv install 2.7.16 3.4.10 3.5.7 3.6.9 3.7.4
+
+# **********************************************************************
+# Node
+# **********************************************************************
 
 
 # Update paths as required for later commands
@@ -173,11 +200,21 @@ npm install -g \
     typescript
 
 
+# **********************************************************************
+# Vim
+# **********************************************************************
+
+
 # Install vim-plug
 if [[ ! -f "$HOME/.vim/autoload/plug.vim" ]]; then
     curl -fLo ~/.vim/autoload/plug.vim --create-dirs \
         https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
 fi
+
+
+# **********************************************************************
+# Mac Packages
+# **********************************************************************
 
 # Install Magnet from the app store
 echo "checking magnet install"
@@ -188,7 +225,7 @@ echo "checking magnet install"
  echo "checking 1password install"
  ONEPW_ID=$(mas search 1Password | /usr/local/bin/rg "1Password 7 - Password Manager +\(" | awk '{print $1}')
  mas install "$ONEPW_ID"
- 
+
  # Install 1password from the app store
  echo "checking Evernote install"
 EVERNOTE_ID=$(mas search Evernote | /usr/local/bin/rg "^ +\d+ +Evernote +\(" | awk '{print $1}')
@@ -199,9 +236,9 @@ EVERNOTE_ID=$(mas search Evernote | /usr/local/bin/rg "^ +\d+ +Evernote +\(" | a
  AMPHETAMINE_ID=$(mas search Amphetamine | /usr/local/bin/rg "Amphetamine +\(" | awk '{print $1}')
  mas install "$AMPHETAMINE_ID"
 
-# ###################################################################### 
+# ######################################################################
 # Configure VSCode
-# ###################################################################### 
+# ######################################################################
 
 CODE="/Applications/Visual Studio Code.app/Contents/Resources/app/bin/code"
 INSTALLED_EXTENSIONS=$("$CODE" --list-extensions)
@@ -261,16 +298,16 @@ KEYBINDINGS_FILE="$SETTINGS_DIR/keybindings.json"
     && ln -fs "$HOME/github/mplanchard/vscode-settings/keybindings.json" "$KEYBINDINGS_FILE"
 
 
-# ###################################################################### 
+# ######################################################################
 # Install Python venvs
-# ###################################################################### 
+# ######################################################################
 
 /usr/local/bin/pip2 install -U \
     ipdb \
     python-language-server[all] \
     pyls-isort \
     pynvim \
-    pytest 
+    pytest
 
 # Install globally available python packages
 /usr/local/bin/pip3 install -U \
@@ -281,7 +318,7 @@ KEYBINDINGS_FILE="$SETTINGS_DIR/keybindings.json"
     pyls-mypy \
     pynvim \
     pytest \
-    virtualenv 
+    virtualenv
 
 # Create python vritual environments
 [[ ! -d $HOME/.pyvenv/py3 ]] \
@@ -350,9 +387,9 @@ $HOME/.pyvenv/py2/bin/pip install $TO_INSTALL_PY2
 vim +'PlugInstall --sync' +qa
 
 
-# ###################################################################### 
+# ######################################################################
 # Configure git
-# ###################################################################### 
+# ######################################################################
 
 # Add `git lg` alias
 

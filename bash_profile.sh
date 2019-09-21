@@ -1,6 +1,8 @@
 # source bashrc file
 [[ -r $HOME/.bashrc ]] && . $HOME/.bashrc
 
+[ -f $HOME/.local_profile ] && . $HOME/.local_profile
+
 # added by Anaconda3 2019.03 installer
 # >>> conda init >>>
 # !! Contents within this block are managed by 'conda init' !!

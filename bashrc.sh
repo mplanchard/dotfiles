@@ -13,3 +13,5 @@ export PS1="\[\033[38;5;13m\][\[$(tput sgr0)\]\[\033[38;5;10m\]\$?\[$(tput sgr0)
 # Direnv support
 eval "$(direnv hook bash)"
 
+source /Users/mplanchard/.ghcup/env
+source /Users/mplanchard/github/jwilm/alacritty/extra/completions/alacritty.bash
