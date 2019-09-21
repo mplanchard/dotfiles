@@ -381,6 +381,10 @@ $HOME/.pyvenv/py2/bin/pip install $TO_INSTALL_PY2
 [[ ! -f $HOME/.config/nvim/init.vim || "$FORCE" ]] \
     && echo "linking neovim config" \
     && ln -fs "$SCRIPT_DIR/init.vim" "$HOME/.config/nvim/init.vim"
+[[ ! -f $HOME/.config/alacritty/alacritty.yml || "$FORCE" ]] \
+    && echo "linking alacritty config" \
+    && mkdir -p "$HOME/.config/alacritty" \
+    && ln -fs "$SCRIPT_DIR/alacritty/alacritty.yml" "$HOME/.config/alacritty/alacritty.yml"
 
 
 # Synchronize vim plugins
@@ -394,7 +398,7 @@ vim +'PlugInstall --sync' +qa
 # Add `git lg` alias
 
 git config --global alias.lg \
-    "log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit"
+    "log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)(%an)%Creset' --abbrev-commit"
 
 # Create a new SSH key for GitHub
 if [[ ! -f "$GH_KEYFILE" ]]; then
