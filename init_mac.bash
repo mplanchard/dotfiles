@@ -68,6 +68,17 @@ export HOMEBREW_NO_AUTO_UPDATE=1
 
 brew update
 
+sudo mkdir -p /usr/local/bin
+sudo mkdir -p /usr/local/etc
+sudo mkdir -p /usr/local/include
+sudo mkdir -p /usr/local/lib
+sudo mkdir -p /usr/local/opt
+sudo mkdir -p /usr/local/sbin
+sudo mkdir -p /usr/local/share
+sudo mkdir -p /usr/local/var
+
+sudo chown -R $(whoami) /usr/local/*
+
 BREW_PKGS=" \
     bash-completion \
     bat \
@@ -179,7 +190,9 @@ fi
 # Python
 # **********************************************************************
 
-pyenv install 2.7.16 3.4.10 3.5.7 3.6.9 3.7.4
+for _python_ver in 2.7.16 3.4.10 3.5.7 3.6.9 3.7.4; do 
+    pyenv install --skip-existing "$_python_ver";
+done
 
 # **********************************************************************
 # Node
@@ -193,8 +206,9 @@ source "/usr/local/opt/nvm/nvm.sh" || true
 # Install most recent stable node
 nvm install stable
 
+# node-gyp \
+# bash-language-server \
 npm install -g \
-    bash-language-server \
     javascript-typescript-langserver \
     neovim \
     typescript
@@ -255,7 +269,6 @@ TO_INSTALL=" \
     marcostazi.VS-code-vagrantfile \
     ms-python.python \
     ms-vscode.cpptools \
-    PeterJausovec.vscode-docker \
     redhat.vscode-yaml \
     rust-lang.rust \
     shd101wyy.markdown-preview-enhanced \
