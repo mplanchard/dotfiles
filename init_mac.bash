@@ -117,6 +117,7 @@ done
 [[ ! -d /Applications/Firefox.app ]] && brew cask install firefox
 [[ ! -d "/Applications/Google Chrome.app" ]] && brew cask install google-chrome
 [[ ! -d "/Applications/Backup and Sync.app" ]] && brew cask install google-photos-backup-and-sync
+[[ ! -d "/Applications/GPG Keychain.app" ]] && brew cask install gpg-suite
 [[ ! -d /Applications/iTerm.app ]] && brew cask install iterm2
 [[ ! -d /Applications/Slack.app ]] && brew cask install slack
 [[ ! -d /Applications/Virtualbox.app ]] && brew cask install virtualbox
