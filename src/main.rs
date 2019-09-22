@@ -1,10 +1,14 @@
-extern crate clap;
-extern crate log;
+//! Entrypoint, handles config parsing and program setup
+//!
+//!
+
+mod error;
 
 use std::process::exit;
 
 use clap::{App, Arg, ArgMatches, SubCommand};
-use log::{info, trace, warn};
+use fern;
+use log;
 
 struct ProgramData {
     name: &'static str,
@@ -57,23 +61,51 @@ impl ProgramConfig {
     }
 }
 
+/// Configure logging
+fn configure_logging(conf: &ProgramConfig) -> Result<(), error::Error> {
+    let log_level = match conf.verbosity {
+        0 => log::LevelFilter::Warn,
+        1 => log::LevelFilter::Info,
+        2 => log::LevelFilter::Debug,
+        3 => log::LevelFilter::Trace,
+        _ => log::LevelFilter::Trace,
+    };
+    Ok(fern::Dispatch::new().apply()?)
+}
+
 /// Create a new "force" ("-f") argument
 ///
 /// This is a shared option for many of the sub-commands, so this helper
 /// is here to generate an equivalent one for each.
 fn new_force_arg<'a, 'b>() -> Arg<'a, 'b> {
-    Arg::with_name("force").short("f").help(
-        "overwrite existing configuration files
-            with the ones from this repo",
+    Arg::with_name("force").short("f").long("force").help(
+        "overwrite existing configuration files \
+         with the ones from this repo",
     )
 }
 
 fn args<'a, 'b>(program_data: &'a ProgramData) -> ArgMatches<'a> {
     App::new(program_data.name)
+        // ------------------------------------------------------------
+        // Program info
+        // ------------------------------------------------------------
         .version(program_data.version)
         .author(program_data.authors)
         .about(program_data.description)
-        .arg(Arg::with_name("verbose").short("v").multiple(true))
+        // ------------------------------------------------------------
+        // Global Args
+        // ------------------------------------------------------------
+        .arg(
+            Arg::with_name("verbose")
+                .short("v")
+                .long("verbose")
+                .multiple(true)
+                .global(true)
+                .help("Increase verbosity (may be specified multiple times)"),
+        )
+        // ------------------------------------------------------------
+        // Subcommands
+        // ------------------------------------------------------------
         .subcommand(
             SubCommand::with_name("init")
                 .about("initialize the host")
