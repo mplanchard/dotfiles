@@ -13,9 +13,8 @@ let g:deoplete#enable_at_startup = 1
 
 let g:LanguageClient_serverCommands = {
     \ 'javascript': ['/usr/local/bin/javascript-typescript-stdio'],
-    \ 'python': ['/usr/local/bin/pyls'],
-    \ 'rust': ['~/.cargo/bin/rustup', 'run', 'nightly', 'rls'],
-    \ 'sh': ['/usr/local/bin/bash-language-server', 'start'],
+    \ 'python': ['pyls'],
+    \ 'rust': ['~/.cargo/bin/rustup', 'run', 'stable', 'rls'],
     \ }
 
 let g:python3_host_prog = '/usr/local/bin/python3'
@@ -47,6 +46,7 @@ Plug 'ekalinin/dockerfile.vim'
 Plug 'elzr/vim-json'
 Plug 'jacob-ogre/vim-syncr'
 Plug 'joshdick/onedark.vim'
+Plug 'junegunn/fzf.vim'
 Plug 'leafgarland/typescript-vim'
 Plug 'mxw/vim-jsx'
 Plug 'nathanaelkane/vim-indent-guides'
@@ -82,7 +82,7 @@ set backspace=indent,eol,start  " normal backspace
 set colorcolumn=72,79,120  " highlight columns
 set foldmethod=syntax  " enable syntax-aware folding
 set foldlevelstart=99  " but don't fold automatically
-set hidden  " for LanguageClient
+" set hidden  " for LanguageClient
 set history=1000
 set hlsearch  " highlight search matches
 set incsearch  " search incrementally
@@ -104,8 +104,13 @@ au! InsertEnter * set relativenumber!
 
 " deoplete stuff
 set completeopt+=noinsert
+"" Use tab to cycle through entries
 inoremap <silent><expr> <TAB> pumvisible() ? deoplete#close_popup() : "\<TAB>"
 inoremap <silent><expr> <CR> pumvisible() ? "\<C-e>\<CR>" : "\<CR>"
+
+" Make space a no-op so we can set it to the leader
+nnoremap <SPACE> <Nop>
+let mapleader=" "
 
 " panes
 set splitright
@@ -133,25 +138,42 @@ let g:resize_count = 5
 " Plugin enabled stuff
 colorscheme onedark
 
-" Use C-Space as a toggle to go to/from insert mode
-inoremap <C-Space> <Esc>
-" for some reason this is required for normal mode, rather than <C-Space>
-nnoremap <NUL> i
-
 " Maps to plugin commands
-nnoremap <C-b> :NERDTree<CR>
-" Find things
-nnoremap <C-f> :FZF<CR>
+
+" Show file tree        
+nnoremap <C-b> :NERDTreeToggle<CR>
+" Find things (provided by fzf plugin)
+nnoremap <C-f> :Rg<CR>
+" Search for files
+nnoremap <Leader>f :FZF<CR>
+" Search within files
+nnoremap <Leader><C-f> :Rg<CR>
+" Comment and uncomment code
+nnoremap <Leader>/ :call NERDComment(0, "toggle")<CR>
 
 " LanguageClient
-nnoremap <F5> :call LanguageClient_contextMenu()<CR>
-" Or map each action separately
-nnoremap <silent> K :call LanguageClient#textDocument_hover()<CR>
-nnoremap <silent> gd :call LanguageClient#textDocument_definition()<CR>
-nnoremap <silent> <F2> :call LanguageClient#textDocument_rename()<CR>
+
+function LC_maps()
+  if has_key(g:LanguageClient_serverCommands, &filetype)
+    nnoremap <buffer> <silent> K :call LanguageClient#textDocument_hover()<cr>
+    nnoremap <buffer> <silent> gd :call LanguageClient#textDocument_definition()<CR>
+    nnoremap <buffer> <silent> <F2> :call LanguageClient#textDocument_rename()<CR>
+  endif
+endfunction
+
+" Currently I can't get it to work well with the floating windows
+let g:LanguageClient_useFloatingHover = 0
+
+" Remove autocmds to avoid multiple definitions when resourcing
+autocmd! FileType
 
 " Remove whitespace for files
-autocmd FileType c,cpp,java,php,py,js,ts autocmd BufWritePre <buffer> %s/\s\+$//e
+autocmd FileType c,cpp,java,php,python,js,ts autocmd BufWritePre <buffer> %s/\s\+$//e
+
+" Autoformat rust files on save
+autocmd FileType rust autocmd BufWritePre <buffer> silent call LanguageClient#textDocument_formatting()
+
+autocmd FileType * call LC_maps()
 
 " Source local config if available
 if !empty(glob('~/.localvimrc'))
