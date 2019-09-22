@@ -110,7 +110,10 @@ inoremap <silent><expr> <CR> pumvisible() ? "\<C-e>\<CR>" : "\<CR>"
 
 " Make space a no-op so we can set it to the leader
 nnoremap <SPACE> <Nop>
-let mapleader=" "
+xnoremap <SPACE> <Nop>
+
+let mapleader = "\<space>"
+let maplocalleader = "\<space>"
 
 " panes
 set splitright
@@ -142,14 +145,19 @@ colorscheme onedark
 
 " Show file tree        
 nnoremap <C-b> :NERDTreeToggle<CR>
+xnoremap <C-b> :NERDTreeToggle<CR>
 " Find things (provided by fzf plugin)
 nnoremap <C-f> :Rg<CR>
+xnoremap <C-f> :Rg<CR>
 " Search for files
 nnoremap <Leader>f :FZF<CR>
+xnoremap <Leader>f :FZF<CR>
 " Search within files
 nnoremap <Leader><C-f> :Rg<CR>
+xnoremap <Leader><C-f> :Rg<CR>
 " Comment and uncomment code
-nnoremap <Leader>/ :call NERDComment(0, "toggle")<CR>
+nnoremap <Leader>/ :call NERDComment(1, 'toggle')<CR>
+xnoremap <Leader>/ :call NERDComment(1, 'toggle')<CR>
 
 " LanguageClient
 
