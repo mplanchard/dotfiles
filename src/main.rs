@@ -1,12 +1,10 @@
-
 extern crate clap;
 extern crate log;
 
 use std::process::exit;
 
-use clap::{Arg, App, ArgMatches, SubCommand};
+use clap::{App, Arg, ArgMatches, SubCommand};
 use log::{info, trace, warn};
-
 
 struct ProgramData {
     name: &'static str,
@@ -24,7 +22,6 @@ impl ProgramData {
         }
     }
 }
-
 
 struct ProgramConfig {
     command: String,
@@ -65,38 +62,30 @@ impl ProgramConfig {
 /// This is a shared option for many of the sub-commands, so this helper
 /// is here to generate an equivalent one for each.
 fn new_force_arg<'a, 'b>() -> Arg<'a, 'b> {
-    Arg::with_name("force")
-        .short("f")
-        .help(
-            "overwrite existing configuration files
-            with the ones from this repo"
-        )
+    Arg::with_name("force").short("f").help(
+        "overwrite existing configuration files
+            with the ones from this repo",
+    )
 }
-
 
 fn args<'a, 'b>(program_data: &'a ProgramData) -> ArgMatches<'a> {
     App::new(program_data.name)
         .version(program_data.version)
         .author(program_data.authors)
         .about(program_data.description)
-        .arg(
-            Arg::with_name("verbose")
-                .short("v")
-                .multiple(true)
-        )
+        .arg(Arg::with_name("verbose").short("v").multiple(true))
         .subcommand(
             SubCommand::with_name("init")
                 .about("initialize the host")
-                .arg(new_force_arg())
+                .arg(new_force_arg()),
         )
         .subcommand(
             SubCommand::with_name("update")
                 .about("ensure the host is up to doate")
-                .arg(new_force_arg())
+                .arg(new_force_arg()),
         )
         .get_matches()
 }
-
 
 fn main() {
     let program_data = ProgramData::from_env();
