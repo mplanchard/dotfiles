@@ -156,7 +156,7 @@ if [[ ! -d "$HOME/github/jwilm/alacritty" ]]; then
     gzip -c $HOME/github/jwilm/alacritty/extra/alacritty.man \
         | tee /usr/local/share/man/man1/alacritty.1.gz > /dev/null
 	# terminfo
-    tic -xe alacritty,alacritty-direct extra/alacritty.info
+    tic -xe alacritty,alacritty-direct $HOME/github/jwilm/extra/alacritty.info
 fi
 
 # **********************************************************************
@@ -338,9 +338,6 @@ KEYBINDINGS_FILE="$SETTINGS_DIR/keybindings.json"
 [[ ! -d $HOME/.pyvenv/py3 ]] \
     && echo "creating python3 venv" \
     && /usr/local/bin/python3 -m venv $HOME/.pyvenv/py3
-[[ ! -d $HOME/.pyvenv/py2 ]] \
-    && echo "creating python2 venv" \
-    && /usr/local/bin/virtualenv -p python2.7 $HOME/.pyvenv/py2
 
 # Install dev packages
 
@@ -350,10 +347,6 @@ TO_INSTALL_ALL=" \
     pydocstyle \
     pylint \
     pytest"
-TO_INSTALL_PY2=" \
-    mock \
-    six \
-    typing"
 TO_INSTALL_PY3=" \
     mypy"
 
@@ -361,11 +354,6 @@ echo "checking python3 packages"
 
 $HOME/.pyvenv/py3/bin/pip install $TO_INSTALL_ALL
 $HOME/.pyvenv/py3/bin/pip install $TO_INSTALL_PY3
-
-echo "checking python2 packages"
-
-$HOME/.pyvenv/py2/bin/pip install $TO_INSTALL_ALL
-$HOME/.pyvenv/py2/bin/pip install $TO_INSTALL_PY2
 
 # ######################################################################
 # Add/Update Config Files
