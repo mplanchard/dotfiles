@@ -91,6 +91,7 @@ BREW_PKGS=" \
     git \
     go \
     gpg \
+    htop \
     mas \
     neovim \
     nvm \
