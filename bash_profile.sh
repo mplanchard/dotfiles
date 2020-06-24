@@ -1,5 +1,5 @@
 # source bashrc file
-[[ -r $HOME/.bashrc ]] && . $HOME/.bashrc
+[[ -r $HOME/.bashrc ]] && source $HOME/.bashrc
 
 [ -f $HOME/.local_profile ] && . $HOME/.local_profile
 

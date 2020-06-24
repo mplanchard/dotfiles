@@ -1,4 +1,5 @@
 alias find='fd'
+alias cat='bat'
 alias ls='exa -F --group-directories-first'
 alias ll='ls -lga@hF --group-directories-first'
 alias rm='rm -i'

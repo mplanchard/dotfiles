@@ -11,6 +11,10 @@ let g:EditorConfig_exclude_patterns = ['fugitive://.*']
 
 let g:deoplete#enable_at_startup = 1
 
+let g:LanguageClient_useFloatingHover = 0
+let g:LanguageClient_settingsPath = expand('~/.config/nvim/settings_langclient.json')
+let g:LanguageClient_loggingLevel = 'INFO'
+let g:LanguageClient_loggingFile = expand('~/.languageclient.log')
 let g:LanguageClient_serverCommands = {
     \ 'javascript': ['/usr/local/bin/javascript-typescript-stdio'],
     \ 'python': ['pyls'],
@@ -52,12 +56,14 @@ Plug 'mxw/vim-jsx'
 Plug 'nathanaelkane/vim-indent-guides'
 Plug 'pangloss/vim-javascript'
 Plug 'plytophogy/vim-virtualenv'
+Plug 'psf/black'
 Plug 'racer-rust/vim-racer'
 Plug 'rust-lang/rust.vim'
 Plug 'scrooloose/nerdcommenter'
 Plug 'scrooloose/nerdtree'
 Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-sensible'
+Plug 'tpope/vim-surround'
 Plug 'Vimjas/vim-python-pep8-indent'
 Plug 'christoomey/vim-tmux-navigator'
 
@@ -169,17 +175,25 @@ function LC_maps()
   endif
 endfunction
 
-" Currently I can't get it to work well with the floating windows
-let g:LanguageClient_useFloatingHover = 0
-
 " Remove autocmds to avoid multiple definitions when resourcing
 autocmd! FileType
 
 " Remove whitespace for files
-autocmd FileType c,cpp,java,php,python,js,ts autocmd BufWritePre <buffer> %s/\s\+$//e
+autocmd FileType c,cpp,java,php,python,js,ts,yaml,yaml.docker-compose autocmd BufWritePre <buffer> %s/\s\+$//e
 
 " Autoformat rust files on save
 autocmd FileType rust autocmd BufWritePre <buffer> silent call LanguageClient#textDocument_formatting()
+
+" **********************************************************************
+" Black
+" **********************************************************************
+"
+let g:black_linelength = 80
+
+" Autoformat python files on save
+autocmd FileType python autocmd BufWritePre <buffer> :Black
+
+" **********************************************************************
 
 autocmd FileType * call LC_maps()
 
