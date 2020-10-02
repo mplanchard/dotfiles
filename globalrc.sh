@@ -9,7 +9,7 @@ export PATH="$HOME/.pyenv/shims:$PATH"
 export WORKON_HOME="$HOME/.pyenv"
 eval "$(pyenv init -)"
 # Use pyenv pythons as default python interpreters
-pyenv global 3.7.4 3.6.9 3.5.7 3.4.10 3.8-dev 2.7.16
+pyenv global 3.7.4 3.6.9 3.5.7 3.4.10 3.8.0 2.7.16
 
 # Add .local/bin to path for haskell stuff
 export PATH="$HOME/.local/bin:$PATH"

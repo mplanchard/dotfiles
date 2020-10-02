@@ -21,4 +21,3 @@ eval "$(direnv hook bash)"
 
 source /Users/mplanchard/.ghcup/env
 source /Users/mplanchard/github/jwilm/alacritty/extra/completions/alacritty.bash
-source /Users/mplanchard/.ghcup/env

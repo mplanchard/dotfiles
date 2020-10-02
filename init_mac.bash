@@ -133,6 +133,8 @@ brew cask install font-powerline-symbols
 brew cask install font-menlo-for-powerline
 brew cask install font-fira-mono-for-powerline
 brew cask install font-source-code-pro
+brew cask install font-ubuntu
+brew cask install font-ubuntu-mono
 
 unset HOMEBREW_NO_AUTO_UPDATE
 
